@@ -1,0 +1,35 @@
+esphome:
+  name: esp32-s3-touch-lcd-7
+  friendly_name: ESP32-S3-Touch-LCD-7
+
+# Print Hello World every 3 seconds
+interval:
+  - interval: 3s
+    then:
+      - logger.log: "Hello World!"
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "fC5grdsdC0LVkvo3xQpCwmzGx0SIZ0gohHJ7aUHMzqM="
+
+ota:
+  - platform: esphome
+    password: "842b5b58e9d33f8bbb1127146dddad89"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "Esp32-S3-Touch-Lcd-7"
+    password: "53mnJFlQyI3Z"
+
+captive_portal:

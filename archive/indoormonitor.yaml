@@ -1,0 +1,32 @@
+esphome:
+  name: indoormonitor
+  friendly_name: indoormonitor
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "0YvqYjQOqziLN8yH7R+53SR1ta8TnAZalBNZVZcU1SM="
+
+ota:
+  - platform: esphome
+    password: "128dd349d89a0bad403de280cc02b850"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Indoormonitor Fallback Hotspot"
+    password: "RwzrPIuTVch9"
+
+captive_portal:
+    
