@@ -1,0 +1,19 @@
+host:
+  # Optionally you can set a MAC address
+  # mac_address: "de:ad:be:ef:fe:ed"
+
+# Simulator display
+display:
+  - platform: sdl
+    id: my_display
+    dimensions:
+      width: 800
+      height: 480
+    auto_clear_enabled: false
+    update_interval: 1s
+    lambda: |-
+      id(display_lambda)(it);
+
+# Simulate touchscreen with SDL
+touchscreen:
+  platform: sdl

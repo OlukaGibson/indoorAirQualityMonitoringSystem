@@ -1,0 +1,21 @@
+# Common configuration shared between hardware and simulator
+
+esphome:
+  name: indoormonitor
+  friendly_name: indoormonitor
+
+# Fonts for display
+font:
+  - file: "gfonts://Roboto"
+    id: roboto_large
+    size: 48
+  - file: "gfonts://Roboto"
+    id: roboto_medium
+    size: 24
+
+# Common interval logging
+interval:
+  - interval: 3s
+    then:
+      - lambda: |-
+          ESP_LOGI("main", "System running! Uptime: %.1f seconds", millis() / 1000.0);

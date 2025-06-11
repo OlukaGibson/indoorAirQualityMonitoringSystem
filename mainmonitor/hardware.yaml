@@ -1,7 +1,3 @@
-esphome:
-  name: indoormonitor
-  friendly_name: indoormonitor
-
 esp32:
   board: esp32-s3-devkitc-1
   variant: esp32s3
@@ -25,7 +21,6 @@ esp32:
     advanced:
       enable_idf_experimental_features: True
 
-# Enable logging
 logger:
   level: DEBUG
   hardware_uart: UART0
@@ -69,14 +64,7 @@ i2c:
   scan: true
   id: bus_a
 
-# Fonts for display
-font:
-  - file: "gfonts://Roboto"
-    id: roboto_large
-    size: 48
-  - file: "gfonts://Roboto"
-    id: roboto_medium
-    size: 24
+# REMOVED FONT DEFINITIONS (now only in common.yaml)
 
 # Backlight control
 output:
@@ -118,7 +106,7 @@ touchscreen:
 display:
   - platform: rpi_dpi_rgb
     id: my_display
-    update_interval: 1s
+    update_interval: 10s
     auto_clear_enabled: false
     color_order: RGB
     pclk_frequency: 16MHz
@@ -164,19 +152,4 @@ display:
         - GPIO47  # G6
         - GPIO21  # G7
     lambda: |-
-      // Clear screen with black background
-      it.fill(Color::WHITE);
-      
-      // Display Hello World in center
-      it.print(400, 200, id(roboto_large), Color::BLACK, TextAlign::CENTER, "Hello Gibson!");
-      
-      // Display uptime below
-      it.printf(400, 280, id(roboto_medium), Color(2, 159, 255), TextAlign::CENTER, 
-                "Uptime: %.1f seconds", millis() / 1000.0);
-
-# Interval for serial printing
-interval:
-  - interval: 3s
-    then:
-      - lambda: |-
-          ESP_LOGI("main", "Hello from ESP32-S3! Uptime: %.1f seconds", millis() / 1000.0);
+      id(display_lambda)(it);

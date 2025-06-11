@@ -1,0 +1,9 @@
+
+packages:
+  # hardware: !include mainmonitor/hardware.yaml
+  hardware: !include mainmonitor/wsl_simulator.yaml
+
+  # Common packages that work in both environments
+  common: !include mainmonitor/common.yaml
+  ui: !include mainmonitor/ui.yaml
+  sensors: !include mainmonitor/sensors.yaml

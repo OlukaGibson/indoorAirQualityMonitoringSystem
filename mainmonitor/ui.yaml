@@ -1,0 +1,103 @@
+# Add image resources for logo and emoji
+image:
+  - file: "airqo_logo.png"
+    id: airqo_logo
+    type: RGB
+    transparency: alpha_channel
+    resize: 80x80
+  - file: "good_emoji.png"
+    id: good_emoji
+    type: RGB
+    transparency: alpha_channel
+    resize: 72x72
+
+# Additional fonts for different text sizes
+font:
+  - file: "gfonts://Roboto"
+    id: roboto_small
+    size: 16
+  - file: "gfonts://Roboto"
+    id: roboto_value
+    size: 32
+
+globals:
+  - id: ui_initialized
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+  - id: last_pm25_value
+    type: float
+    restore_value: no
+    initial_value: '-1'
+  - id: display_lambda
+    type: std::function<void(display::Display &)>
+    restore_value: no
+    initial_value: |-
+      [](display::Display &it) {
+        // Draw static UI elements only once
+        if (!id(ui_initialized)) {
+          // Set light blue background
+          it.fill(Color(252, 253, 254));
+          
+          // Top header bar (darker blue)
+          it.filled_rectangle(0, 60, it.get_width(), 1, Color(0, 118, 190));
+          
+          // AirQo logo (top left)
+          it.image(35, 6, &id(airqo_logo), COLOR_ON, COLOR_OFF);
+          
+          // Time display (center top)
+          it.filled_rectangle(329, 6, 142, 49, Color(255, 255, 255));
+          it.print(400, 27, &id(roboto_medium), Color::BLACK, TextAlign::CENTER, "17:17");
+          
+          // Room label
+          it.filled_rectangle(286, 85, 228, 42, Color(232, 232, 232));
+          it.print(400, 105, &id(roboto_medium), Color::BLACK, TextAlign::CENTER, "Room 1");
+          
+          // Left side - Air quality info
+          // Pollutant label
+          it.filled_rectangle(53, 170, 168, 64, Color(232, 232, 232));
+          it.print(138, 205, &id(roboto_medium), Color::BLACK, TextAlign::RIGHT, "PM2.5 ");
+          
+          // Green emoji indicator
+          //it.filled_circle(250, 265, 40, Color(200, 255, 200));
+          // Emoji image
+          it.image(216, 223, &id(good_emoji), COLOR_ON, COLOR_OFF);
+          
+          // Graph area on right
+          it.rectangle(328, 170, 445, 270, Color::BLACK);
+          
+          // Draw grid lines
+          for (int x = 0; x < 4; x++) {
+            int pos_x = 328 + (x * 111);
+            it.line(pos_x, 170, pos_x, 440, Color(200, 200, 200));
+          }
+          
+          for (int y = 0; y < 2; y++) {
+            int pos_y = 170 + (y * 135);
+            it.line(328, pos_y, 773, pos_y, Color(200, 200, 200));
+          }
+          
+          id(ui_initialized) = true;
+        }
+        
+        // Only update the PM2.5 value display when it changes
+        float pm25 = 123.4; // Default value
+        
+        if (id(pm25_sensor).has_state()) {
+          pm25 = id(pm25_sensor).state;
+        }
+        
+        // Only redraw if the value has changed
+        if (pm25 != id(last_pm25_value)) {
+          // Clear previous value area
+          it.filled_rectangle(53, 240, 142, 47, Color(232, 232, 232));
+          
+          // Draw new value  μg/m³
+          char value_str[16];
+          sprintf(value_str, "%.1f mg/m3", pm25);
+          it.print(170, 265, &id(roboto_small), Color::BLACK, TextAlign::RIGHT, value_str);
+          
+          // Store last value
+          id(last_pm25_value) = pm25;
+        }
+      }

@@ -1,0 +1,18 @@
+sensor:
+  - platform: template
+    name: "Simulated PM2.5"
+    id: pm25_sensor
+    unit_of_measurement: "μg/m³"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      return random_float() * 50.0;
+      
+  - platform: template
+    name: "Simulated Temperature"
+    id: temperature_sensor
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      return 20.0 + (random_float() * 10.0);
