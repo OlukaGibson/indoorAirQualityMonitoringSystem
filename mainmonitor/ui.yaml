@@ -9,7 +9,7 @@ image:
     id: good_emoji
     type: RGB
     transparency: alpha_channel
-    resize: 72x72
+    resize: 80x80
 
 # Additional fonts for different text sizes
 font:
@@ -46,7 +46,7 @@ globals:
           it.image(35, 6, &id(airqo_logo), COLOR_ON, COLOR_OFF);
           
           // Time display (center top)
-          it.filled_rectangle(329, 6, 142, 49, Color(255, 255, 255));
+          it.filled_rectangle(329, 6, 142, 49, Color(232, 232, 232));
           it.print(400, 27, &id(roboto_medium), Color::BLACK, TextAlign::CENTER, "17:17");
           
           // Room label
