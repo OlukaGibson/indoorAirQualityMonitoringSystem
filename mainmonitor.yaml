@@ -1,4 +1,3 @@
-
 packages:
   # hardware: !include mainmonitor/hardware.yaml
   hardware: !include mainmonitor/wsl_simulator.yaml
@@ -7,3 +6,6 @@ packages:
   common: !include mainmonitor/common.yaml
   ui: !include mainmonitor/ui.yaml
   sensors: !include mainmonitor/sensors.yaml
+  
+  # Add the counter component
+  counter: !include mainmonitor/components/counter.yaml

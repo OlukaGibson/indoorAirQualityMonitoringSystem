@@ -10,9 +10,9 @@ display:
       width: 800
       height: 480
     auto_clear_enabled: false
-    update_interval: 1s
-    lambda: |-
-      id(display_lambda)(it);
+    update_interval: never
+    # lambda: |-
+    #   id(display_lambda)(it);
 
 # Simulate touchscreen with SDL
 touchscreen:

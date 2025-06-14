@@ -151,5 +151,5 @@ display:
         - GPIO48  # G5
         - GPIO47  # G6
         - GPIO21  # G7
-    lambda: |-
-      id(display_lambda)(it);
+    # lambda: |-
+    #   id(display_lambda)(it);

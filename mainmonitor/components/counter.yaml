@@ -1,0 +1,26 @@
+# Counter component configuration
+
+# Global variables for the counter
+globals:
+  - id: counter_value
+    type: int
+    restore_value: yes
+    initial_value: '0'
+
+# Button to increment the counter
+button:
+  - platform: template
+    name: "Increment Counter"
+    id: increment_button
+    on_press:
+      then:
+        - lambda: 'id(counter_value)++;'
+        - component.update: counter_display
+
+# Text sensor to display the counter value
+text_sensor:
+  - platform: template
+    name: "Counter Value"
+    id: counter_display
+    lambda: 'return to_string(id(counter_value));'
+    update_interval: never
