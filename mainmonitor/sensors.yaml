@@ -3,11 +3,41 @@ sensor:
     name: "Simulated PM2.5"
     id: pm25_sensor
     unit_of_measurement: "μg/m³"
-    accuracy_decimals: 1
+    accuracy_decimals: 2
     update_interval: 10s
     lambda: |-
       return random_float() * 50.0;
-      
+
+    on_value:
+      - lvgl.label.update:
+          id: pm25_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "PM2.5: %.2f mg/m3", x); 
+            return buffer;
+           
+  - platform: template
+    name: Simulated CO2
+    id: co2_sensor
+    unit_of_measurement: ppm
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      return random_float() * 1000.0;
+    on_value:
+      - then:
+          # Update the CO2 label
+          - lvgl.label.update:
+              id: co2_value_label
+              text: !lambda |-
+                char buffer[32];
+                snprintf(buffer, sizeof(buffer), "CO2: %.2f ppm", x);
+                return buffer;
+          
+          # Update the arc using lambda directly
+          - lambda: |-
+              lv_arc_set_value(id(co2_arc), (int)x);
+
   - platform: template
     name: "Simulated Temperature"
     id: temperature_sensor
