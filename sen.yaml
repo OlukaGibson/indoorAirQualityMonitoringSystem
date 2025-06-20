@@ -1,0 +1,131 @@
+# Add global variables to store sensor readings
+globals:
+  - id: last_pm25
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: last_co2
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: uart_buffer
+    type: std::string
+    restore_value: no
+    initial_value: '""'
+
+# UART configuration
+uart:
+  id: uart_bus
+  baud_rate: 115200
+  rx_pin: GPIO44  # Should connect to Arduino TX pin 17
+  tx_pin: GPIO43  # Should connect to Arduino RX pin 18
+
+# Enhanced debugging
+logger:
+  level: VERBOSE
+  logs:
+    uart: VERBOSE
+
+# Use a fast updating sensor to poll the UART buffer
+sensor:
+  - platform: template
+    name: "UART Reader"
+    id: uart_reader
+    update_interval: 0.5s
+    lambda: |-
+      // Check for available UART data
+      static std::string &buffer = id(uart_buffer);
+      
+      // Debug statement to check if we're entering this function
+      ESP_LOGD("UART", "Checking UART: available=%d, buffer='%s'", 
+               id(uart_bus).available(), buffer.c_str());
+      
+      while (id(uart_bus).available()) {
+        uint8_t c;
+        if (id(uart_bus).read_byte(&c)) {
+          // Debug each received character
+          ESP_LOGV("UART", "Received byte: 0x%02X (%c)", c, (c >= 32 && c < 127) ? c : '?');
+          
+          // Handle both CR and LF as line endings
+          if (c == '\n' || c == '\r') {
+            if (buffer.empty()) {
+              continue; // Skip empty lines (like the \r after \n)
+            }
+            
+            // Debug the complete line
+            ESP_LOGI("UART", "Complete line received: '%s'", buffer.c_str());
+            
+            // Parse the data format: "1.60,830.00"
+            size_t comma_pos = buffer.find(',');
+            if (comma_pos != std::string::npos) {
+              // Safe parsing without exceptions
+              char* end;
+              float pm25 = strtof(buffer.substr(0, comma_pos).c_str(), &end);
+              if (end != buffer.substr(0, comma_pos).c_str()) {
+                float co2 = strtof(buffer.substr(comma_pos + 1).c_str(), &end);
+                if (end != buffer.substr(comma_pos + 1).c_str()) {
+                  // Store values in global variables
+                  id(last_pm25) = pm25;
+                  id(last_co2) = co2;
+                  
+                  ESP_LOGI("UART", "Successfully parsed PM2.5: %.2f, CO2: %.2f", pm25, co2);
+                } else {
+                  ESP_LOGE("UART", "Failed to parse CO2 value: %s", buffer.c_str());
+                }
+              } else {
+                ESP_LOGE("UART", "Failed to parse PM2.5 value: %s", buffer.c_str());
+              }
+            } else {
+              ESP_LOGW("UART", "No comma found in data: %s", buffer.c_str());
+            }
+            buffer.clear();
+          } else {
+            buffer += (char)c;
+          }
+        }
+      }
+      
+      // Always return 0 as this is just a polling sensor
+      return 0;
+    internal: true  
+    
+  - platform: template
+    name: "PM2.5"
+    id: pm25_sensor
+    unit_of_measurement: "μg/m³"
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      return id(last_pm25);
+    on_value:
+      - lvgl.label.update:
+          id: pm25_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "PM2.5: %.2f mg/m3", x); 
+            return buffer;
+# μg/m³
+
+  - platform: template
+    name: CO2
+    id: co2_sensor
+    unit_of_measurement: ppm
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      return id(last_co2);
+    on_value:
+      - then:
+          # Update the CO2 label
+          - lvgl.label.update:
+              id: co2_value_label
+              text: !lambda |-
+                char buffer[32];
+                snprintf(buffer, sizeof(buffer), "CO2: %.2f ppm", x);
+                return buffer;
+          
+          # Update the arc using lambda directly
+          - lambda: |-
+              lv_arc_set_value(id(co2_arc), (int)x);
+
+              
