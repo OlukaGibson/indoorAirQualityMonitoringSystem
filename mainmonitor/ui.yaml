@@ -42,233 +42,235 @@ image:
     resize: 120x120
 
 lvgl:
-  widgets:
-    # Navbar for this page
-    - image:
-        src: airqo_logo
-        align: TOP_LEFT
-        opa : 100%
-        x: 35
-        y: 6
-
-    - obj:
-        id: time_label
-        x: 0
-        y: 6
-        width: 142
-        height: 40
-        align: TOP_MID
-        bg_color: 0xe7eaee
-        scrollbar_mode: 'OFF'
-        #scroll_dir: NONE
-        widgets:
-          - label:
-              text: '17:17'
-              text_color: 0x000000
-              align: CENTER
-              # text_font: roboto_medium
-
-    - line:
-        points:
-          - 0, 60
-          - 795, 60
-          # - 120, 10
-          # - x: !lambda return random_uint32() % 100;
-          #   y: !lambda return random_uint32() % 100;
-          # - 230, 15
-        line_width: 2
-        line_color: 0x0000FF
-        line_rounded: true
-
-    # Room label
-    - obj:
-        x: 286
-        y: 85
-        width: 228
-        height: 42
-        bg_color: 0xe7eaee
-        scrollbar_mode: 'OFF'
-        widgets:
-          - label:
-              text: 'Gibson Room'
-              text_color: 0x000000
-              align: CENTER
-              # text_font: roboto_medium
-      
-    # Left side - Air quality info
-    - obj:
-        x: 120
-        y: 170
-        width: 220
-        height: 40
-        bg_color: 0xf77fe4
-        bg_opa : 40%
-        border_color: 0xf77fe4
-        border_width: 1
-        clip_corner : false
-        radius : 100 
-        scrollbar_mode: 'OFF'
-        #scroll_dir: NONE
-        widgets:
-          - label:
-              text: 'Hazardous'
-              text_color: 0xc847b5
-              align: CENTER
-
-    - obj:
-        x: 130
-        y: 220
-        width: 195
-        height: 40
-        bg_color: 0xD9D8D8
-        bg_opa : 40%
-        border_color: 0xD9D8D8
-        border_width: 1
-        clip_corner : false
-        radius : 100 
-        scrollbar_mode: 'OFF'
-        #scroll_dir: NONE
-        widgets:
-          - label:
-              id: pm25_value_label
-              text: 'PM2.5: 00.00 mg/m3'
-              text_color: 0x898989
-              align: RIGHT_MID
-
-    - image:
-        src: Hazardous
-        x: 45
-        y: 155
-        width: 120
-        height: 120
-
-    # CO2 area below
-    - arc:
-        x: 45
-        y: 400
-        id: co2_arc
-        # value_width: 20
-        # arc_width: 20
-        value: 25
-        min_value: 0
-        max_value: 1000
-        transform_angle  : 270
-        width: 100  
-        height: 100 
+  pages:
+    - id: main_page
+      widgets:
+        # Navbar for this page
+        - image:
+            src: airqo_logo
+            align: TOP_LEFT
+            opa : 100%
+            x: 35
+            y: 6
     
-    - obj:
-        x: 100
-        y: 330
-        width: 220
-        height: 40
-        bg_color: 0x3a84fd
-        bg_opa : 40%
-        border_color: 0x3a84fd
-        border_width: 1
-        clip_corner : false
-        radius : 100 
-        scrollbar_mode: 'OFF'
-        #scroll_dir: NONE
-        widgets:
-          - label:
-              id: co2_value_label
-              text: 'CO2: 000.00 ppm'
-              text_color: 0x0049c2
-              align: CENTER
-      
-    # Graph area on right
-    - obj:
-        x: 345
-        y: 175
-        width: 430
-        height: 260
-        # bg_color: 0xFFFFFF
-        # border_color: 0x000000
-        border_width: 1
-        scrollbar_mode: 'OFF'
-        widgets:
-          # Title label
-          - label:
-              text: 'PM2.5 Graph'
-              text_color: 0x000000
-              align: TOP_MID
-              x: 200
-              y: 2
-              width: 430
-              height: 30
-              # text_font: roboto_medium
+        - obj:
+            id: time_label
+            x: 0
+            y: 6
+            width: 142
+            height: 40
+            align: TOP_MID
+            bg_color: 0xe7eaee
+            scrollbar_mode: 'OFF'
+            #scroll_dir: NONE
+            widgets:
+              - label:
+                  text: '17:17'
+                  text_color: 0x000000
+                  align: CENTER
+                  # text_font: roboto_medium
+    
+        - line:
+            points:
+              - 0, 60
+              - 795, 60
+              # - 120, 10
+              # - x: !lambda return random_uint32() % 100;
+              #   y: !lambda return random_uint32() % 100;
+              # - 230, 15
+            line_width: 2
+            line_color: 0x0000FF
+            line_rounded: true
+    
+        # Room label
+        - obj:
+            x: 286
+            y: 85
+            width: 228
+            height: 42
+            bg_color: 0xe7eaee
+            scrollbar_mode: 'OFF'
+            widgets:
+              - label:
+                  text: 'Gibson Room'
+                  text_color: 0x000000
+                  align: CENTER
+                  # text_font: roboto_medium
+          
+        # Left side - Air quality info
+        - obj:
+            x: 120
+            y: 170
+            width: 220
+            height: 40
+            bg_color: 0xf77fe4
+            bg_opa : 40%
+            border_color: 0xf77fe4
+            border_width: 1
+            clip_corner : false
+            radius : 100 
+            scrollbar_mode: 'OFF'
+            #scroll_dir: NONE
+            widgets:
+              - label:
+                  text: 'Hazardous'
+                  text_color: 0xc847b5
+                  align: CENTER
+    
+        - obj:
+            x: 130
+            y: 220
+            width: 195
+            height: 40
+            bg_color: 0xD9D8D8
+            bg_opa : 40%
+            border_color: 0xD9D8D8
+            border_width: 1
+            clip_corner : false
+            radius : 100 
+            scrollbar_mode: 'OFF'
+            #scroll_dir: NONE
+            widgets:
+              - label:
+                  id: pm25_value_label
+                  text: 'PM2.5: 00.00 mg/m3'
+                  text_color: 0x898989
+                  align: RIGHT_MID
+    
+        - image:
+            src: Hazardous
+            x: 45
+            y: 155
+            width: 120
+            height: 120
+    
+        # CO2 area below
+        - arc:
+            x: 45
+            y: 400
+            id: co2_arc
+            # value_width: 20
+            # arc_width: 20
+            value: 25
+            min_value: 0
+            max_value: 1000
+            transform_angle  : 270
+            width: 100  
+            height: 100 
+        
+        - obj:
+            x: 100
+            y: 330
+            width: 220
+            height: 40
+            bg_color: 0x3a84fd
+            bg_opa : 40%
+            border_color: 0x3a84fd
+            border_width: 1
+            clip_corner : false
+            radius : 100 
+            scrollbar_mode: 'OFF'
+            #scroll_dir: NONE
+            widgets:
+              - label:
+                  id: co2_value_label
+                  text: 'CO2: 000.00 ppm'
+                  text_color: 0x0049c2
+                  align: CENTER
+          
+        # Graph area on right
+        - obj:
+            x: 345
+            y: 175
+            width: 430
+            height: 260
+            # bg_color: 0xFFFFFF
+            # border_color: 0x000000
+            border_width: 1
+            scrollbar_mode: 'OFF'
+            widgets:
+              # Title label
+              - label:
+                  text: 'PM2.5 Graph'
+                  text_color: 0x000000
+                  align: TOP_MID
+                  x: 200
+                  y: 2
+                  width: 430
+                  height: 30
+                  # text_font: roboto_medium
+                  
+              - line:
+                  points:
+                    - 5, 220
+                    - 400, 220
+                  line_width: 1
+                  line_color: 0x000000
               
-          - line:
-              points:
-                - 5, 220
-                - 400, 220
-              line_width: 1
-              line_color: 0x000000
-          
-          #bar lines
-          - line:
-              points:
-                - 10, 150
-                - 10, 213
-              line_width: 10
-              line_color: 0x347cd7
-              line_rounded: true
-          
-          - line:
-              points:
-                - 25, 200
-                - 25, 213
-              line_width: 10
-              line_color: 0x347cd7
-              line_rounded: true
-          
-          - line:
-              points:
-                - 40, 30
-                - 40, 213
-              line_width: 10
-              line_color: 0x347cd7
-              line_rounded: true
-          
-          - line:
-              points:
-                - 55, 130
-                - 55, 213
-              line_width: 10
-              line_color: 0x347cd7
-              line_rounded: true
-
-          - line:
-                points:
-                  - 70, 150
-                  - 70, 213
-                line_width: 10
-                line_color: 0x347cd7
-                line_rounded: true
-
-          - line:
-                points:
-                  - 85, 150
-                  - 85, 213
-                line_width: 10
-                line_color: 0x347cd7
-                line_rounded: true
-          
-          - line:
-                points:
-                  - 100, 150
-                  - 100, 213
-                line_width: 10
-                line_color: 0x347cd7
-                line_rounded: true
-          
-          - line:
-                points:
-                  - 115, 100
-                  - 115, 213
-                line_width: 10
-                line_color: 0x347cd7
-                line_rounded: true
+              #bar lines
+              - line:
+                  points:
+                    - 10, 150
+                    - 10, 213
+                  line_width: 10
+                  line_color: 0x347cd7
+                  line_rounded: true
+              
+              - line:
+                  points:
+                    - 25, 200
+                    - 25, 213
+                  line_width: 10
+                  line_color: 0x347cd7
+                  line_rounded: true
+              
+              - line:
+                  points:
+                    - 40, 30
+                    - 40, 213
+                  line_width: 10
+                  line_color: 0x347cd7
+                  line_rounded: true
+              
+              - line:
+                  points:
+                    - 55, 130
+                    - 55, 213
+                  line_width: 10
+                  line_color: 0x347cd7
+                  line_rounded: true
+    
+              - line:
+                    points:
+                      - 70, 150
+                      - 70, 213
+                    line_width: 10
+                    line_color: 0x347cd7
+                    line_rounded: true
+    
+              - line:
+                    points:
+                      - 85, 150
+                      - 85, 213
+                    line_width: 10
+                    line_color: 0x347cd7
+                    line_rounded: true
+              
+              - line:
+                    points:
+                      - 100, 150
+                      - 100, 213
+                    line_width: 10
+                    line_color: 0x347cd7
+                    line_rounded: true
+              
+              - line:
+                    points:
+                      - 115, 100
+                      - 115, 213
+                    line_width: 10
+                    line_color: 0x347cd7
+                    line_rounded: true
 #         points:
 #           - 0, 60
 #           - 795, 60
