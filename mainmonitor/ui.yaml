@@ -79,7 +79,7 @@ lvgl:
               #   y: !lambda return random_uint32() % 100;
               # - 230, 15
             line_width: 2
-            line_color: 0x0000FF
+            line_color: 0x347cd7
             line_rounded: true
     
         # Room label
@@ -96,6 +96,7 @@ lvgl:
                   text_color: 0x000000
                   align: CENTER
                   # text_font: roboto_medium
+          
           
         # Left side - Air quality info
         - obj:
@@ -137,12 +138,22 @@ lvgl:
                   text_color: 0x898989
                   align: RIGHT_MID
     
+        #conditional display of emoji based on PM2.5 value
         - image:
-            src: Hazardous
+            id: air_quality_icon
             x: 45
             y: 155
             width: 120
             height: 120
+            src: Hazardous
+
+        # Hidden label for update logic
+        - label:
+            id: air_quality_updater
+            x: 0
+            y: 0
+            opa: 0%  # Corrected from opacity to opa
+            text: ""
     
         # CO2 area below
         - arc:
@@ -271,6 +282,113 @@ lvgl:
                     line_width: 10
                     line_color: 0x347cd7
                     line_rounded: true
+
+interval:
+  - interval: 500ms
+    then:
+      - lambda: |-
+          // Get current PM2.5 value from the label text
+          const char* label_text = lv_label_get_text(id(pm25_value_label));
+          std::string text(label_text);
+          
+          // Extract numeric value from the label text
+          float pm25 = 0.0;
+          size_t pos = text.find("PM2.5:");
+          if (pos != std::string::npos) {
+            std::string value_str = text.substr(pos + 6); // Skip "PM2.5:"
+            pos = value_str.find("mg/m3");
+            if (pos != std::string::npos) {
+              value_str = value_str.substr(0, pos);
+              // Trim whitespace
+              while (!value_str.empty() && isspace(value_str.front())) value_str.erase(0, 1);
+              while (!value_str.empty() && isspace(value_str.back())) value_str.pop_back();
+              
+              // Parse the value
+              char* end;
+              pm25 = strtof(value_str.c_str(), &end);
+              
+              // Debug the extracted value
+              ESP_LOGD("AirQuality", "Extracted PM2.5 value: %.2f from text: '%s'", 
+                      pm25, value_str.c_str());
+            }
+          }
+          
+          // Make sure image is visible
+          lv_obj_set_style_opa(id(air_quality_icon), 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+          lv_obj_move_foreground(id(air_quality_icon));
+          
+          // Find label for text update - located in the pink container at y:170
+          lv_obj_t* air_quality_container = nullptr;
+          lv_obj_t* air_quality_label = nullptr;
+          
+          // Search for the container with y=170
+          lv_obj_t* obj = lv_scr_act();
+          for (int i = 0; i < lv_obj_get_child_cnt(obj); i++) {
+            lv_obj_t* child = lv_obj_get_child(obj, i);
+            lv_coord_t y = lv_obj_get_y(child);
+            if (y == 170) {
+              air_quality_container = child;
+              break;
+            }
+          }
+          
+          // If found container, get the label inside
+          if (air_quality_container != nullptr) {
+            air_quality_label = lv_obj_get_child(air_quality_container, 0);
+          }
+          
+          // Update UI based on PM2.5 value
+          const char* quality_text = "Unknown";
+          uint32_t text_color = 0x000000;
+          uint32_t bg_color = 0xFFFFFF;
+          void* img_src = nullptr;
+          
+          ESP_LOGD("AirQuality", "Using PM2.5 value: %.2f", pm25);
+          
+          // Update image and text based on value
+          if (pm25 <= 9.00) {
+            quality_text = "Good";
+            text_color = 0x00b016;
+            bg_color = 0x68D36C;
+            lv_img_set_src(id(air_quality_icon), id(GoodAir));
+            ESP_LOGD("AirQuality", "Setting image to GoodAir");
+          } else if (pm25 <= 55.40) {
+            quality_text = "Moderate";
+            text_color = 0xfcbf01;
+            bg_color = 0xfec81d;
+            lv_img_set_src(id(air_quality_icon), id(Moderate));
+            ESP_LOGD("AirQuality", "Setting image to Moderate");
+          } else if (pm25 <= 125.40) {
+            quality_text = "Unhealthy for All";
+            text_color = 0xe70808;
+            bg_color = 0xf3624e;
+            lv_img_set_src(id(air_quality_icon), id(Unhealthy));
+            ESP_LOGD("AirQuality", "Setting image to Unhealthy");
+          } else if (pm25 <= 225.40) {
+            quality_text = "Very Unhealthy";
+            text_color = 0xaa4ef3;
+            bg_color = 0xc27ff7;
+            lv_img_set_src(id(air_quality_icon), id(VeryUnhealthy));
+            ESP_LOGD("AirQuality", "Setting image to VeryUnhealthy");
+          } else {
+            quality_text = "Hazardous";
+            text_color = 0xe124e1;
+            bg_color = 0xf77fe4; 
+            lv_img_set_src(id(air_quality_icon), id(Hazardous));
+            ESP_LOGD("AirQuality", "Setting image to Hazardous");
+          }
+          
+          // Update the label text and colors if found
+          if (air_quality_label != nullptr) {
+            lv_label_set_text(air_quality_label, quality_text);
+            lv_obj_set_style_text_color(air_quality_label, lv_color_hex(text_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            
+            // Update container background color
+            lv_obj_set_style_bg_color(air_quality_container, lv_color_hex(bg_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_color(air_quality_container, lv_color_hex(bg_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            
+            ESP_LOGD("AirQuality", "Updated UI for: %s (%.2f)", quality_text, pm25);
+          }
 #         points:
 #           - 0, 60
 #           - 795, 60

@@ -6,7 +6,7 @@ sensor:
     accuracy_decimals: 2
     update_interval: 10s
     lambda: |-
-      return random_float() * 50.0;
+      return random_float() * 400.0;
 
     on_value:
       - lvgl.label.update:
