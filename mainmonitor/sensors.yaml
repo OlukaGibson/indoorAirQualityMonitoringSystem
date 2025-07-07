@@ -1,4 +1,7 @@
+# {"room1":{"pm":{"pm1":{"raw":30,"calibrated":null},"pm2_5":{"raw":50,"calibrated":null},"pm10":{"raw":53,"calibrated":null}},"tvoc":{"raw":0.00,"calibrated":null},"hcho":{"raw":0.02,"calibrated":null},"co2":{"raw":520,"calibrated":null},"temp":{"raw":33.30,"calibrated":null},"humidity":{"raw":44.80,"calibrated":null}}}
+
 sensor:
+# simulated results to pm2.5
   - platform: template
     name: "Simulated PM2.5"
     id: pm25_sensor
@@ -15,7 +18,86 @@ sensor:
             char buffer[32];
             snprintf(buffer, sizeof(buffer), "PM2.5: %.2f mg/m3", x); 
             return buffer;
-           
+
+# simulated results to pm10
+  - platform: template
+    name: "Simulated PM10"
+    id: pm10_sensor
+    unit_of_measurement: "μg/m³"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      return random_float() * 400.0;
+
+    on_value:
+      - lvgl.label.update:
+          id: pm10_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "PM10: %.2f mg/m3", x); 
+            return buffer;
+
+# simulated results to pm1
+  - platform: template
+    name: "Simulated PM1"
+    id: pm1_sensor
+    unit_of_measurement: "μg/m³"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      return random_float() * 400.0;
+    
+    on_value:
+      - lvgl.label.update:
+          id: pm1_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "PM1: %.2f mg/m3", x); 
+            return buffer;
+
+# Simulated sensors for TVOC
+  - platform: template
+    name: "Simulated TVOC"
+    id: tvoc_sensor
+    unit_of_measurement: "ppb"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      return random_float() * 500.0;
+    on_value:
+      - lvgl.label.update:
+          id: tvoc_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "TVOC: %.2f ppb", x); 
+            return buffer;
+      
+      # Update the arc using lambda directly
+      - lambda: |-
+          lv_arc_set_value(id(tvoc_arc), (int)x);
+
+# Simulated sensors for HCHO (Formaldehyde)
+  - platform: template
+    name: "Simulated HCHO"
+    id: hcho_sensor
+    unit_of_measurement: "mg/m³"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      return random_float() * 0.1;  // Simulating HCHO in mg/m³
+    on_value:
+      - lvgl.label.update:
+          id: hcho_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "HCHO: %.2f mg/m³", x); 
+            return buffer;
+      
+      # Update the arc using lambda directly
+      - lambda: |-
+          lv_arc_set_value(id(hcho_arc), (int)x);
+
+# Simulated sensors for CO2
   - platform: template
     name: Simulated CO2
     id: co2_sensor
@@ -38,6 +120,7 @@ sensor:
           - lambda: |-
               lv_arc_set_value(id(co2_arc), (int)x);
 
+# Simulated sensors for Temperature 
   - platform: template
     name: "Simulated Temperature"
     id: temperature_sensor
@@ -46,3 +129,42 @@ sensor:
     update_interval: 10s
     lambda: |-
       return 20.0 + (random_float() * 10.0);
+
+    on_value:
+      - lvgl.label.update:
+          id: temperature_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Temp: %.1f °C", x); 
+            return buffer;
+      - lvgl.label.update:
+          id: temp_display_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Temp: %.1f°C", x); 
+            return buffer;
+
+# Simulated sensors for Humidity
+  - platform: template
+    name: "Simulated Humidity"
+    id: humidity_sensor
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      return 30.0 + (random_float() * 50.0);
+
+    on_value:
+      - lvgl.label.update:
+          id: humidity_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Humidity: %.1f %%", x); 
+            return buffer;
+      - lvgl.label.update:
+          id: humidity_display_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Humidity: %.1f%%", x); 
+            return buffer;
+

@@ -1,10 +1,34 @@
 # Add global variables to store sensor readings
 globals:
+  - id: last_pm1
+    type: float
+    restore_value: no
+    initial_value: '0'
   - id: last_pm25
     type: float
     restore_value: no
     initial_value: '0'
+  - id: last_pm10
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: last_tvoc
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: last_hcho
+    type: float
+    restore_value: no
+    initial_value: '0'
   - id: last_co2
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: last_temp
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: last_humidity
     type: float
     restore_value: no
     initial_value: '0'
@@ -53,30 +77,80 @@ sensor:
             }
             
             // Debug the complete line
-            ESP_LOGI("UART", "Complete line received: '%s'", buffer.c_str());
+            ESP_LOGI("UART", "Complete JSON received: '%s'", buffer.c_str());
             
-            // Parse the data format: "1.60,830.00"
-            size_t comma_pos = buffer.find(',');
-            if (comma_pos != std::string::npos) {
-              // Safe parsing without exceptions
-              char* end;
-              float pm25 = strtof(buffer.substr(0, comma_pos).c_str(), &end);
-              if (end != buffer.substr(0, comma_pos).c_str()) {
-                float co2 = strtof(buffer.substr(comma_pos + 1).c_str(), &end);
-                if (end != buffer.substr(comma_pos + 1).c_str()) {
-                  // Store values in global variables
-                  id(last_pm25) = pm25;
-                  id(last_co2) = co2;
+            // Simple JSON parsing for the specific format
+            // Look for "room1" data
+            size_t room1_pos = buffer.find("\"room1\":");
+            if (room1_pos != std::string::npos) {
+              
+              // Helper function to extract value (calibrated or raw)
+              auto extract_sensor_value = [&](const std::string& sensor_path) -> float {
+                size_t sensor_pos = buffer.find(sensor_path);
+                if (sensor_pos == std::string::npos) return 0.0;
+                
+                // Look for calibrated value first
+                size_t cal_pos = buffer.find("\"calibrated\":", sensor_pos);
+                if (cal_pos != std::string::npos) {
+                  size_t cal_start = cal_pos + 13; // length of "calibrated":
                   
-                  ESP_LOGI("UART", "Successfully parsed PM2.5: %.2f, CO2: %.2f", pm25, co2);
-                } else {
-                  ESP_LOGE("UART", "Failed to parse CO2 value: %s", buffer.c_str());
+                  // Skip whitespace
+                  while (cal_start < buffer.length() && (buffer[cal_start] == ' ' || buffer[cal_start] == '\t')) {
+                    cal_start++;
+                  }
+                  
+                  // Check if calibrated is null
+                  if (buffer.substr(cal_start, 4) != "null") {
+                    // Extract calibrated value
+                    size_t cal_end = buffer.find_first_of(",}", cal_start);
+                    if (cal_end != std::string::npos) {
+                      std::string cal_str = buffer.substr(cal_start, cal_end - cal_start);
+                      char* end;
+                      float cal_val = strtof(cal_str.c_str(), &end);
+                      if (end != cal_str.c_str()) {
+                        ESP_LOGD("UART", "Using calibrated value for %s: %.2f", sensor_path.c_str(), cal_val);
+                        return cal_val;
+                      }
+                    }
+                  }
                 }
-              } else {
-                ESP_LOGE("UART", "Failed to parse PM2.5 value: %s", buffer.c_str());
-              }
+                
+                // Fall back to raw value
+                size_t raw_pos = buffer.find("\"raw\":", sensor_pos);
+                if (raw_pos != std::string::npos) {
+                  size_t raw_start = raw_pos + 6; // length of "raw":
+                  size_t raw_end = buffer.find_first_of(",}", raw_start);
+                  if (raw_end != std::string::npos) {
+                    std::string raw_str = buffer.substr(raw_start, raw_end - raw_start);
+                    char* end;
+                    float raw_val = strtof(raw_str.c_str(), &end);
+                    if (end != raw_str.c_str()) {
+                      ESP_LOGD("UART", "Using raw value for %s: %.2f", sensor_path.c_str(), raw_val);
+                      return raw_val;
+                    }
+                  }
+                }
+                
+                ESP_LOGW("UART", "Could not extract value for %s", sensor_path.c_str());
+                return 0.0;
+              };
+              
+              // Extract all sensor values
+              id(last_pm1) = extract_sensor_value("\"pm1\":");
+              id(last_pm25) = extract_sensor_value("\"pm2_5\":");
+              id(last_pm10) = extract_sensor_value("\"pm10\":");
+              id(last_tvoc) = extract_sensor_value("\"tvoc\":");
+              id(last_hcho) = extract_sensor_value("\"hcho\":");
+              id(last_co2) = extract_sensor_value("\"co2\":");
+              id(last_temp) = extract_sensor_value("\"temp\":");
+              id(last_humidity) = extract_sensor_value("\"humidity\":");
+              
+              ESP_LOGI("UART", "Parsed values - PM1:%.2f PM2.5:%.2f PM10:%.2f TVOC:%.2f HCHO:%.2f CO2:%.2f Temp:%.2f Hum:%.2f", 
+                      id(last_pm1), id(last_pm25), id(last_pm10), id(last_tvoc), 
+                      id(last_hcho), id(last_co2), id(last_temp), id(last_humidity));
+              
             } else {
-              ESP_LOGW("UART", "No comma found in data: %s", buffer.c_str());
+              ESP_LOGW("UART", "No room1 data found in JSON: %s", buffer.c_str());
             }
             buffer.clear();
           } else {
@@ -89,6 +163,22 @@ sensor:
       return 0;
     internal: true  
     
+  - platform: template
+    name: "PM1"
+    id: pm1_sensor
+    unit_of_measurement: "μg/m³"
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      return id(last_pm1);
+    on_value:
+      - lvgl.label.update:
+          id: pm1_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "PM1: %.2f mg/m3", x); 
+            return buffer;
+
   - platform: template
     name: "PM2.5"
     id: pm25_sensor
@@ -104,7 +194,62 @@ sensor:
             char buffer[32];
             snprintf(buffer, sizeof(buffer), "PM2.5: %.2f mg/m3", x); 
             return buffer;
-# μg/m³
+
+  - platform: template
+    name: "PM10"
+    id: pm10_sensor
+    unit_of_measurement: "μg/m³"
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      return id(last_pm10);
+    on_value:
+      - lvgl.label.update:
+          id: pm10_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "PM10: %.2f mg/m3", x); 
+            return buffer;
+
+  - platform: template
+    name: "TVOC"
+    id: tvoc_sensor
+    unit_of_measurement: "ppb"
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      return id(last_tvoc);
+    on_value:
+      - lvgl.label.update:
+          id: tvoc_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "TVOC: %.2f ppb", x); 
+            return buffer;
+
+      # Update the arc using lambda directly
+      - lambda: |-
+          lv_arc_set_value(id(tvoc_arc), (int)x);
+
+  - platform: template
+    name: "HCHO"
+    id: hcho_sensor
+    unit_of_measurement: "mg/m3"
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      return id(last_hcho);
+    on_value:
+      - lvgl.label.update:
+          id: hcho_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "HCHO: %.2f mg/m3", x); 
+            return buffer;
+      
+      # Update the arc using lambda directly
+      - lambda: |-
+          lv_arc_set_value(id(hcho_arc), (int)x);
 
   - platform: template
     name: CO2
@@ -127,5 +272,49 @@ sensor:
           # Update the arc using lambda directly
           - lambda: |-
               lv_arc_set_value(id(co2_arc), (int)x);
+
+  - platform: template
+    name: "Temperature"
+    id: temperature_sensor
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    update_interval: 5s
+    lambda: |-
+      return id(last_temp);
+    on_value:
+      - lvgl.label.update:
+          id: temperature_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Temp: %.1f °C", x); 
+            return buffer;
+      - lvgl.label.update:
+          id: temp_display_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Temp: %.1f°C", x); 
+            return buffer;
+
+  - platform: template
+    name: "Humidity"
+    id: humidity_sensor
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    update_interval: 5s
+    lambda: |-
+      return id(last_humidity);
+    on_value:
+      - lvgl.label.update:
+          id: humidity_value_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Humidity: %.1f %%", x); 
+            return buffer;
+      - lvgl.label.update:
+          id: humidity_display_label
+          text: !lambda |-
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "Humidity: %.1f%%", x); 
+            return buffer;
 
               

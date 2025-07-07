@@ -1,0 +1,44 @@
+# mainmonitor\images\airqualityicons
+
+image:
+  - file: "mainmonitor/images/logo/airqo_logo.png"
+    id: airqo_logo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
+  
+  - file: "mainmonitor/images/airqualityicons/GoodAir.png"
+    id: GoodAir
+    type: RGB565
+    transparency: alpha_channel
+    resize: 120x120
+  
+  - file: "mainmonitor/images/airqualityicons/Moderate.png"
+    id: Moderate
+    type: RGB565
+    transparency: alpha_channel
+    resize: 120x120
+
+  - file: "mainmonitor/images/airqualityicons/UnhealthySG.png"
+    id: UnhealthySG
+    type: RGB565
+    transparency: alpha_channel
+    resize: 120x120
+
+  - file: "mainmonitor/images/airqualityicons/Unhealthy.png"
+    id: Unhealthy
+    type: RGB565
+    transparency: alpha_channel
+    resize: 120x120
+  
+  - file: "mainmonitor/images/airqualityicons/VeryUnhealthy.png"
+    id: VeryUnhealthy
+    type: RGB565
+    transparency: alpha_channel
+    resize: 120x120
+
+  - file: "mainmonitor/images/airqualityicons/Hazardous.png"
+    id: Hazardous
+    type: RGB565
+    transparency: alpha_channel
+    resize: 120x120
