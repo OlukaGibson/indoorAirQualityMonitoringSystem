@@ -1,41 +1,8 @@
 - id: main_page
   widgets:
-    # Navbar for this page
-    - image:
-        src: airqo_logo
-        align: TOP_LEFT
-        opa : 100%
-        x: 35
-        y: 6
-
-    - obj:
-        id: time_label
-        x: 0
-        y: 6
-        width: 142
-        height: 40
-        align: TOP_MID
-        bg_color: 0xe7eaee
-        scrollbar_mode: 'OFF'
-        #scroll_dir: NONE
-        widgets:
-          - label:
-              text: '17:17'
-              text_color: 0x000000
-              align: CENTER
-              # text_font: roboto_medium
-    
-    - line:
-        points:
-          - 0, 60
-          - 795, 60
-          # - 120, 10
-          # - x: !lambda return random_uint32() % 100;
-          #   y: !lambda return random_uint32() % 100;
-          # - 230, 15
-        line_width: 2
-        line_color: 0x347cd7
-        line_rounded: true
+    - !include ../components/navbar_logo.yaml
+    - !include ../components/navbar_time.yaml
+    - !include ../components/navbar_separator.yaml
 
     # Room label
     - obj:
@@ -189,7 +156,6 @@
         opa: 0%
         text: "Humidity: 00.0 %"
       
-
     # TVOC area below
     - arc:
         x: 445

@@ -1,0 +1,7 @@
+line:
+  points:
+    - 0, 60
+    - 795, 60
+  line_width: 2
+  line_color: 0x347cd7
+  line_rounded: true
