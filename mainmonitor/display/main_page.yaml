@@ -1,8 +1,8 @@
 - id: main_page
   widgets:
-    - !include ../components/navbar_logo.yaml
-    - !include ../components/navbar_time.yaml
-    - !include ../components/navbar_separator.yaml
+    - !include ../components/navbar/logo.yaml
+    # - !include ../components/navbar/separator.yaml
+    # - !include ../components/navbar/time.yaml
 
     # Room label
     - obj:
