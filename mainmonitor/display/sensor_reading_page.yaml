@@ -1,4 +1,4 @@
-- id: main_page
+- id: sensor_reading_page
   widgets:
     # navbar
     - !include ../components/navbar/logo.yaml

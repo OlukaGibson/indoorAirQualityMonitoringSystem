@@ -1,0 +1,6 @@
+label:
+  id: air_quality_updater
+  x: 0
+  y: 0
+  opa: 0%  # Corrected from opacity to opa
+  text: ""

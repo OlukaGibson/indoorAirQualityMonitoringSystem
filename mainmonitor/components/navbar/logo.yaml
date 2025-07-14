@@ -1,32 +1,39 @@
-obj:
-  id: navbar
-  x: 0
-  y: 0
-  width: 800
-  height: 50
-  radius : 0
+image:
+  src: airqo_logo
+  align: TOP_LEFT
+  opa: 100%
+  x: 35
+  y: 6
+
+# obj:
+#   id: navbar
+#   x: 0
+#   y: 0
+#   width: 800
+#   height: 50
+#   radius : 0
   
-  widgets:
-    - image:
-        src: airqo_logo
-        align: TOP_LEFT
-        opa: 100%
-        x: 35
-        y: 6
+#   widgets:
+#     - image:
+#         src: airqo_logo
+#         align: TOP_LEFT
+#         opa: 100%
+#         x: 35
+#         y: 6
     
-    - obj:
-        id: separator
-        x: 180
-        y: 6
-        width: 80
-        height: 40
-        align: TOP_LEFT
-        bg_color: 0xe7eaee
-        bg_opa: 100%
-        scrollbar_mode: 'OFF'
-        widgets:
-          - label:
-              text: '17:17'
-              text_color: 0x000000
-              align: CENTER
-              # text_font: roboto_medium
+#     - obj:
+#         id: separator
+#         x: 180
+#         y: 6
+#         width: 80
+#         height: 40
+#         align: TOP_LEFT
+#         bg_color: 0xe7eaee
+#         bg_opa: 100%
+#         scrollbar_mode: 'OFF'
+#         widgets:
+#           - label:
+#               text: '17:17'
+#               text_color: 0x000000
+#               align: CENTER
+#               # text_font: roboto_medium

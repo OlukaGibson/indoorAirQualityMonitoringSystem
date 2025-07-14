@@ -1,0 +1,7 @@
+image:
+  id: air_quality_icon
+  x: 45
+  y: 155
+  width: 120
+  height: 120
+  src: Hazardous
