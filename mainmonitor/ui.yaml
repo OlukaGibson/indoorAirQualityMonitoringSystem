@@ -107,3 +107,5 @@ interval:
             
             ESP_LOGD("AirQuality", "Updated UI for: %s (%.2f)", quality_text, pm25);
           }
+
+

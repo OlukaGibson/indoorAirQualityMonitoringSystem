@@ -283,12 +283,6 @@ sensor:
       return id(last_temp);
     on_value:
       - lvgl.label.update:
-          id: temperature_value_label
-          text: !lambda |-
-            char buffer[32];
-            snprintf(buffer, sizeof(buffer), "Temp: %.1f °C", x); 
-            return buffer;
-      - lvgl.label.update:
           id: temp_display_label
           text: !lambda |-
             char buffer[32];
@@ -304,12 +298,6 @@ sensor:
     lambda: |-
       return id(last_humidity);
     on_value:
-      - lvgl.label.update:
-          id: humidity_value_label
-          text: !lambda |-
-            char buffer[32];
-            snprintf(buffer, sizeof(buffer), "Humidity: %.1f %%", x); 
-            return buffer;
       - lvgl.label.update:
           id: humidity_display_label
           text: !lambda |-

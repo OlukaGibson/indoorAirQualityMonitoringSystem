@@ -21,7 +21,7 @@
 
     # Hidden label for update logic
 
-    - !include ../components/sensors/pm_reading/air_quality_updater.yaml
+    # - !include ../components/sensors/pm_reading/air_quality_updater.yaml
 
     # CO2 area below
     - !include ../components/sensors/co2_reading/co2_arc.yaml
@@ -43,35 +43,7 @@
         y: 0
         opa: 0%
         text: "PM1: 00.00 mg/m3"
-    
-    # - label:
-    #     id: tvoc_value_label
-    #     x: 0
-    #     y: 0
-    #     opa: 0%
-    #     text: "TVOC: 00.00 ppb"
-    
-    # - label:
-    #     id: hcho_value_label
-    #     x: 0
-    #     y: 0
-    #     opa: 0%
-    #     text: "HCHO: 00.00 mg/m³"
-    
-    - label:
-        id: temperature_value_label
-        x: 0
-        y: 0
-        opa: 0%
-        text: "Temp: 00.0 °C"
-    
-    - label:
-        id: humidity_value_label
-        x: 0
-        y: 0
-        opa: 0%
-        text: "Humidity: 00.0 %"
-      
+          
     # TVOC area below
     - !include ../components/sensors/tvoc_reading/tvoc_arc.yaml
     
