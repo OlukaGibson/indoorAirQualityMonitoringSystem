@@ -1,10 +1,26 @@
 lvgl:
-  pages: !include display/main_page.yaml
+  # pages: !include display/main_page.yaml
+  # pages: !include display/all_sensors/all_sensors.yaml
+  # pages: !include display/pm_sensor_page/pm_sensor_page.yaml
+  # pages: !include display/co2_sensor_page/co2_sensor_page.yaml
+  # pages: !include display/hcho_sensor_page/hcho_sensor_page.yaml
+  pages: !include display/tvoc_sensor_page/tvoc_sensor_page.yaml
 
 interval:
   - interval: 500ms
     then:
       - lambda: |-
+          // Static variables to maintain history for all sensors
+          static std::vector<float> pm25_history;
+          static std::vector<float> co2_history;
+          static std::vector<float> hcho_history;
+          static std::vector<float> tvoc_history;
+          static bool first_run = true;
+          static float last_pm25_value = -1.0;
+          static float last_co2_value = -1.0;
+          static float last_hcho_value = -1.0;
+          static float last_tvoc_value = -1.0;
+          
           // Get current PM2.5 value from the label text
           const char* label_text = lv_label_get_text(id(pm25_value_label));
           std::string text(label_text);
@@ -29,6 +45,334 @@ interval:
               ESP_LOGD("AirQuality", "Extracted PM2.5 value: %.2f from text: '%s'", 
                       pm25, value_str.c_str());
             }
+          }
+          
+          // Get current CO2 value from the label text
+          const char* co2_label_text = lv_label_get_text(id(co2_value_label));
+          std::string co2_text(co2_label_text);
+          
+          // Extract numeric value from the CO2 label text
+          float co2 = 0.0;
+          size_t co2_pos = co2_text.find("CO2:");
+          if (co2_pos != std::string::npos) {
+            std::string co2_value_str = co2_text.substr(co2_pos + 4); // Skip "CO2:"
+            co2_pos = co2_value_str.find("ppm");
+            if (co2_pos != std::string::npos) {
+              co2_value_str = co2_value_str.substr(0, co2_pos);
+              // Trim whitespace
+              while (!co2_value_str.empty() && isspace(co2_value_str.front())) co2_value_str.erase(0, 1);
+              while (!co2_value_str.empty() && isspace(co2_value_str.back())) co2_value_str.pop_back();
+              
+              // Parse the value
+              char* end;
+              co2 = strtof(co2_value_str.c_str(), &end);
+              
+              // Debug the extracted value
+              ESP_LOGD("CO2", "Extracted CO2 value: %.2f from text: '%s'", 
+                      co2, co2_value_str.c_str());
+            }
+          }
+          
+          // Get current HCHO value from the label text
+          const char* hcho_label_text = lv_label_get_text(id(hcho_value_label));
+          std::string hcho_text(hcho_label_text);
+          
+          // Extract numeric value from the HCHO label text
+          float hcho = 0.0;
+          size_t hcho_pos = hcho_text.find("HCHO:");
+          if (hcho_pos != std::string::npos) {
+            std::string hcho_value_str = hcho_text.substr(hcho_pos + 5); // Skip "HCHO:"
+            hcho_pos = hcho_value_str.find("mg/m³");
+            if (hcho_pos != std::string::npos) {
+              hcho_value_str = hcho_value_str.substr(0, hcho_pos);
+              // Trim whitespace
+              while (!hcho_value_str.empty() && isspace(hcho_value_str.front())) hcho_value_str.erase(0, 1);
+              while (!hcho_value_str.empty() && isspace(hcho_value_str.back())) hcho_value_str.pop_back();
+              
+              // Parse the value
+              char* end;
+              hcho = strtof(hcho_value_str.c_str(), &end);
+              
+              // Debug the extracted value
+              ESP_LOGD("HCHO", "Extracted HCHO value: %.2f from text: '%s'", 
+                      hcho, hcho_value_str.c_str());
+            }
+          }
+          
+          // Get current TVOC value from the label text
+          const char* tvoc_label_text = lv_label_get_text(id(tvoc_value_label));
+          std::string tvoc_text(tvoc_label_text);
+          
+          // Extract numeric value from the TVOC label text
+          float tvoc = 0.0;
+          size_t tvoc_pos = tvoc_text.find("TVOC:");
+          if (tvoc_pos != std::string::npos) {
+            std::string tvoc_value_str = tvoc_text.substr(tvoc_pos + 5); // Skip "TVOC:"
+            tvoc_pos = tvoc_value_str.find("ppb");
+            if (tvoc_pos != std::string::npos) {
+              tvoc_value_str = tvoc_value_str.substr(0, tvoc_pos);
+              // Trim whitespace
+              while (!tvoc_value_str.empty() && isspace(tvoc_value_str.front())) tvoc_value_str.erase(0, 1);
+              while (!tvoc_value_str.empty() && isspace(tvoc_value_str.back())) tvoc_value_str.pop_back();
+              
+              // Parse the value
+              char* end;
+              tvoc = strtof(tvoc_value_str.c_str(), &end);
+              
+              // Debug the extracted value
+              ESP_LOGD("TVOC", "Extracted TVOC value: %.2f from text: '%s'", 
+                      tvoc, tvoc_value_str.c_str());
+            }
+          }
+          
+          // Check if values have changed
+          bool pm25_changed = (fabs(pm25 - last_pm25_value) > 0.01);
+          bool co2_changed = (fabs(co2 - last_co2_value) > 0.01);
+          bool hcho_changed = (fabs(hcho - last_hcho_value) > 0.001);
+          bool tvoc_changed = (fabs(tvoc - last_tvoc_value) > 0.01);
+          
+          // Update PM2.5 graph
+          if (first_run || pm25_changed) {
+            if (first_run) {
+              pm25_history.clear();
+              for (int i = 0; i < 24; i++) {
+                pm25_history.push_back(pm25);
+              }
+            } else {
+              pm25_history.erase(pm25_history.begin());
+              pm25_history.push_back(pm25);
+            }
+            
+            // Update each PM bar based on history
+            lv_obj_t* pm_bars[] = {id(pm_bar_1), id(pm_bar_2), id(pm_bar_3), id(pm_bar_4), 
+                                   id(pm_bar_5), id(pm_bar_6), id(pm_bar_7), id(pm_bar_8),
+                                   id(pm_bar_9), id(pm_bar_10), id(pm_bar_11), id(pm_bar_12),
+                                   id(pm_bar_13), id(pm_bar_14), id(pm_bar_15), id(pm_bar_16),
+                                   id(pm_bar_17), id(pm_bar_18), id(pm_bar_19), id(pm_bar_20),
+                                   id(pm_bar_21), id(pm_bar_22), id(pm_bar_23), id(pm_bar_24)};
+            
+            // Find min and max values in the PM history for dynamic scaling
+            float pm_min_value = pm25_history[0];
+            float pm_max_value = pm25_history[0];
+            for (int i = 1; i < 24; i++) {
+              if (pm25_history[i] < pm_min_value) pm_min_value = pm25_history[i];
+              if (pm25_history[i] > pm_max_value) pm_max_value = pm25_history[i];
+            }
+            
+            float pm_value_range = pm_max_value - pm_min_value;
+            if (pm_value_range < 1.0) {
+              pm_value_range = 1.0;
+              pm_min_value = pm_max_value - 0.5;
+            }
+            
+            ESP_LOGD("PMGraph", "Dynamic scaling - Min: %.2f, Max: %.2f, Range: %.2f", pm_min_value, pm_max_value, pm_value_range);
+            
+            for (int i = 0; i < 24; i++) {
+              float value = pm25_history[i];
+              
+              int bar_height = 10 + (int)(((value - pm_min_value) / pm_value_range) * 180);
+              if (bar_height < 10) bar_height = 10;
+              if (bar_height > 190) bar_height = 190;
+              
+              int bar_y = 220 - bar_height;
+              
+              // Choose color based on PM2.5 thresholds
+              uint32_t bar_color = 0x347cd7;
+              if (value <= 9.00) {
+                bar_color = 0x00b016;      // Good - Green
+              } else if (value <= 55.40) {
+                bar_color = 0xfcbf01;      // Moderate - Yellow
+              } else if (value <= 125.40) {
+                bar_color = 0xe70808;      // Unhealthy - Red
+              } else if (value <= 225.40) {
+                bar_color = 0xaa4ef3;      // Very Unhealthy - Purple
+              } else {
+                bar_color = 0xe124e1;      // Hazardous - Magenta
+              }
+              
+              lv_obj_set_y(pm_bars[i], bar_y);
+              lv_obj_set_height(pm_bars[i], bar_height);
+              lv_obj_set_style_bg_color(pm_bars[i], lv_color_hex(bar_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            }
+            
+            ESP_LOGD("PMGraph", "Updated PM2.5 graph with value: %.2f", pm25);
+            last_pm25_value = pm25;
+          }
+          
+          // Update CO2 graph
+          if (first_run || co2_changed) {
+            if (first_run) {
+              co2_history.clear();
+              for (int i = 0; i < 24; i++) {
+                co2_history.push_back(co2);
+              }
+            } else {
+              co2_history.erase(co2_history.begin());
+              co2_history.push_back(co2);
+            }
+            
+            // Update each CO2 bar based on history
+            lv_obj_t* co2_bars[] = {id(co2_bar_1), id(co2_bar_2), id(co2_bar_3), id(co2_bar_4), 
+                                    id(co2_bar_5), id(co2_bar_6), id(co2_bar_7), id(co2_bar_8),
+                                    id(co2_bar_9), id(co2_bar_10), id(co2_bar_11), id(co2_bar_12),
+                                    id(co2_bar_13), id(co2_bar_14), id(co2_bar_15), id(co2_bar_16),
+                                    id(co2_bar_17), id(co2_bar_18), id(co2_bar_19), id(co2_bar_20),
+                                    id(co2_bar_21), id(co2_bar_22), id(co2_bar_23), id(co2_bar_24)};
+            
+            // Find min and max values in the CO2 history for dynamic scaling
+            float co2_min_value = co2_history[0];
+            float co2_max_value = co2_history[0];
+            for (int i = 1; i < 24; i++) {
+              if (co2_history[i] < co2_min_value) co2_min_value = co2_history[i];
+              if (co2_history[i] > co2_max_value) co2_max_value = co2_history[i];
+            }
+            
+            float co2_value_range = co2_max_value - co2_min_value;
+            if (co2_value_range < 10.0) {
+              co2_value_range = 10.0;
+              co2_min_value = co2_max_value - 5.0;
+            }
+            
+            ESP_LOGD("CO2Graph", "Dynamic scaling - Min: %.2f, Max: %.2f, Range: %.2f", co2_min_value, co2_max_value, co2_value_range);
+            
+            for (int i = 0; i < 24; i++) {
+              float co2_value = co2_history[i];
+              
+              int bar_height = 10 + (int)(((co2_value - co2_min_value) / co2_value_range) * 180);
+              if (bar_height < 10) bar_height = 10;
+              if (bar_height > 190) bar_height = 190;
+              
+              int bar_y = 220 - bar_height;
+              
+              // Set color to blue for CO2 graph
+              uint32_t bar_color = 0x347cd7; // Blue color
+              
+              lv_obj_set_y(co2_bars[i], bar_y);
+              lv_obj_set_height(co2_bars[i], bar_height);
+              lv_obj_set_style_bg_color(co2_bars[i], lv_color_hex(bar_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            }
+            
+            ESP_LOGD("CO2Graph", "Updated CO2 graph with value: %.2f", co2);
+            last_co2_value = co2;
+          }
+          
+          // Update HCHO graph
+          if (first_run || hcho_changed) {
+            if (first_run) {
+              hcho_history.clear();
+              for (int i = 0; i < 24; i++) {
+                hcho_history.push_back(hcho);
+              }
+            } else {
+              hcho_history.erase(hcho_history.begin());
+              hcho_history.push_back(hcho);
+            }
+            
+            // Update each HCHO bar based on history
+            lv_obj_t* hcho_bars[] = {id(hcho_bar_1), id(hcho_bar_2), id(hcho_bar_3), id(hcho_bar_4), 
+                                     id(hcho_bar_5), id(hcho_bar_6), id(hcho_bar_7), id(hcho_bar_8),
+                                     id(hcho_bar_9), id(hcho_bar_10), id(hcho_bar_11), id(hcho_bar_12),
+                                     id(hcho_bar_13), id(hcho_bar_14), id(hcho_bar_15), id(hcho_bar_16),
+                                     id(hcho_bar_17), id(hcho_bar_18), id(hcho_bar_19), id(hcho_bar_20),
+                                     id(hcho_bar_21), id(hcho_bar_22), id(hcho_bar_23), id(hcho_bar_24)};
+            
+            // Find min and max values in the HCHO history for dynamic scaling
+            float hcho_min_value = hcho_history[0];
+            float hcho_max_value = hcho_history[0];
+            for (int i = 1; i < 24; i++) {
+              if (hcho_history[i] < hcho_min_value) hcho_min_value = hcho_history[i];
+              if (hcho_history[i] > hcho_max_value) hcho_max_value = hcho_history[i];
+            }
+            
+            float hcho_value_range = hcho_max_value - hcho_min_value;
+            if (hcho_value_range < 0.01) {
+              hcho_value_range = 0.01;
+              hcho_min_value = hcho_max_value - 0.005;
+            }
+            
+            ESP_LOGD("HCHOGraph", "Dynamic scaling - Min: %.4f, Max: %.4f, Range: %.4f", hcho_min_value, hcho_max_value, hcho_value_range);
+            
+            for (int i = 0; i < 24; i++) {
+              float hcho_value = hcho_history[i];
+              
+              int bar_height = 10 + (int)(((hcho_value - hcho_min_value) / hcho_value_range) * 180);
+              if (bar_height < 10) bar_height = 10;
+              if (bar_height > 190) bar_height = 190;
+              
+              int bar_y = 220 - bar_height;
+              
+              // Set color to orange for HCHO graph
+              uint32_t bar_color = 0xff9500; // Orange color
+              
+              lv_obj_set_y(hcho_bars[i], bar_y);
+              lv_obj_set_height(hcho_bars[i], bar_height);
+              lv_obj_set_style_bg_color(hcho_bars[i], lv_color_hex(bar_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            }
+            
+            ESP_LOGD("HCHOGraph", "Updated HCHO graph with value: %.4f", hcho);
+            last_hcho_value = hcho;
+          }
+          
+          // Update TVOC graph
+          if (first_run || tvoc_changed) {
+            if (first_run) {
+              tvoc_history.clear();
+              for (int i = 0; i < 24; i++) {
+                tvoc_history.push_back(tvoc);
+              }
+            } else {
+              tvoc_history.erase(tvoc_history.begin());
+              tvoc_history.push_back(tvoc);
+            }
+            
+            // Update each TVOC bar based on history
+            lv_obj_t* tvoc_bars[] = {id(tvoc_bar_1), id(tvoc_bar_2), id(tvoc_bar_3), id(tvoc_bar_4), 
+                                     id(tvoc_bar_5), id(tvoc_bar_6), id(tvoc_bar_7), id(tvoc_bar_8),
+                                     id(tvoc_bar_9), id(tvoc_bar_10), id(tvoc_bar_11), id(tvoc_bar_12),
+                                     id(tvoc_bar_13), id(tvoc_bar_14), id(tvoc_bar_15), id(tvoc_bar_16),
+                                     id(tvoc_bar_17), id(tvoc_bar_18), id(tvoc_bar_19), id(tvoc_bar_20),
+                                     id(tvoc_bar_21), id(tvoc_bar_22), id(tvoc_bar_23), id(tvoc_bar_24)};
+            
+            // Find min and max values in the TVOC history for dynamic scaling
+            float tvoc_min_value = tvoc_history[0];
+            float tvoc_max_value = tvoc_history[0];
+            for (int i = 1; i < 24; i++) {
+              if (tvoc_history[i] < tvoc_min_value) tvoc_min_value = tvoc_history[i];
+              if (tvoc_history[i] > tvoc_max_value) tvoc_max_value = tvoc_history[i];
+            }
+            
+            float tvoc_value_range = tvoc_max_value - tvoc_min_value;
+            if (tvoc_value_range < 5.0) {
+              tvoc_value_range = 5.0;
+              tvoc_min_value = tvoc_max_value - 2.5;
+            }
+            
+            ESP_LOGD("TVOCGraph", "Dynamic scaling - Min: %.2f, Max: %.2f, Range: %.2f", tvoc_min_value, tvoc_max_value, tvoc_value_range);
+            
+            for (int i = 0; i < 24; i++) {
+              float tvoc_value = tvoc_history[i];
+              
+              int bar_height = 10 + (int)(((tvoc_value - tvoc_min_value) / tvoc_value_range) * 180);
+              if (bar_height < 10) bar_height = 10;
+              if (bar_height > 190) bar_height = 190;
+              
+              int bar_y = 220 - bar_height;
+              
+              // Set color to purple for TVOC graph
+              uint32_t bar_color = 0x8e44ad; // Purple color
+              
+              lv_obj_set_y(tvoc_bars[i], bar_y);
+              lv_obj_set_height(tvoc_bars[i], bar_height);
+              lv_obj_set_style_bg_color(tvoc_bars[i], lv_color_hex(bar_color), LV_PART_MAIN | LV_STATE_DEFAULT);
+            }
+            
+            ESP_LOGD("TVOCGraph", "Updated TVOC graph with value: %.2f", tvoc);
+            last_tvoc_value = tvoc;
+          }
+          
+          // Set first_run to false after all initializations
+          if (first_run) {
+            first_run = false;
           }
           
           // Make sure image is visible

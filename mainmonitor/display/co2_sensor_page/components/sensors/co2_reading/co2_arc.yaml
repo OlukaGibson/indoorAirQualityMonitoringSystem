@@ -1,0 +1,12 @@
+arc:
+  x: 45
+  y: 270
+  id: co2_arc
+  # value_width: 20
+  # arc_width: 20
+  value: 25
+  min_value: 0
+  max_value: 1000
+  transform_angle  : 270
+  width: 100  
+  height: 100 

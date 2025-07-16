@@ -19,10 +19,6 @@
     #conditional display of emoji based on PM2.5 value
     - !include ../components/sensors/pm_reading/air_quality_icon.yaml
 
-    # Hidden label for update logic
-
-    # - !include ../components/sensors/pm_reading/air_quality_updater.yaml
-
     # CO2 area below
     - !include ../components/sensors/co2_reading/co2_arc.yaml
     
@@ -60,8 +56,8 @@
     - !include ../components/sensors/temperature/temperature.yaml
 
     # Humidity display
-    - !include ../components/sensors/humidity/humidity.yaml
+    - !include ../components/sensors/humidity/humidity_main.yaml
 
     # # Graphs section
-    # - !include ../components/graphs/graph.yaml
+    - !include ../components/graphs/graph.yaml
 

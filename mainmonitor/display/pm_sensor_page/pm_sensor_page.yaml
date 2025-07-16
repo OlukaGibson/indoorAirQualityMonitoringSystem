@@ -1,0 +1,65 @@
+- id: pm_sensor_page
+  widgets:
+    # navbar
+    - !include ../../components/navbar/logo.yaml
+    - !include ../../components/navbar/separator.yaml
+    - !include ../../components/navbar/time.yaml
+
+    # Room label
+    - !include ../../components/room/room_name.yaml
+
+         
+    # Left side - Air quality info
+    - !include ./components/sensors/pm_reading/pm_image.yaml
+
+    # Pollutant label
+    - !include ./components/sensors/pm_reading/pm_label.yaml
+
+    #conditional display of emoji based on PM2.5 value
+    - !include ./components/sensors/pm_reading/air_quality_icon.yaml
+
+    # CO2 area below
+    - !include ./components/sensors/co2_reading/co2_arc.yaml
+    
+    # CO2 value label
+    - !include ./components/sensors/co2_reading/co2_label.yaml
+
+    # Hidden labels for sensors (not displayed but needed for sensor updates)
+    - label:
+        id: pm10_value_label
+        x: 0
+        y: 0
+        opa: 0%
+        text: "PM10: 00.00 mg/m3"
+    
+    - label:
+        id: pm1_value_label
+        x: 0
+        y: 0
+        opa: 0%
+        text: "PM1: 00.00 mg/m3"
+          
+    # TVOC area below
+    - !include ./components/sensors/tvoc_reading/tvoc_arc.yaml
+    
+    # TVOC value label
+    - !include ./components/sensors/tvoc_reading/tvoc_label.yaml
+                  
+    # HCHO area below
+    - !include ./components/sensors/hcho_reading/hcho_arc.yaml
+    
+    # HCHO value label
+    - !include ./components/sensors/hcho_reading/hcho_label.yaml
+
+    # Temperature display 
+    - !include ./components/sensors/temperature/temperature.yaml
+
+    # Humidity display
+    - !include ./components/sensors/humidity/humidity.yaml
+
+    # Graphs section
+    - !include ./components/graphs/pm_graph.yaml
+    - !include ./components/graphs/co2_graph.yaml
+    - !include ./components/graphs/hcho_graph.yaml
+    - !include ./components/graphs/tvoc_graph.yaml
+
