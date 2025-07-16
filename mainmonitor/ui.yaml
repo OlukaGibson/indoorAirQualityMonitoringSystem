@@ -1,10 +1,16 @@
 lvgl:
-  # pages: !include display/main_page.yaml
-  # pages: !include display/all_sensors/all_sensors.yaml
-  # pages: !include display/pm_sensor_page/pm_sensor_page.yaml
-  # pages: !include display/co2_sensor_page/co2_sensor_page.yaml
-  # pages: !include display/hcho_sensor_page/hcho_sensor_page.yaml
-  pages: !include display/tvoc_sensor_page/tvoc_sensor_page.yaml
+  pages: !include display/main_page.yaml
+  # pages:
+  #   - id: all_sensors_page
+  #     widgets: !include display/all_sensors/all_sensors.yaml
+  #   - id: pm_sensor_page
+  #     widgets: !include display/pm_sensor_page/pm_sensor_page.yaml
+  #   - id: co2_sensor_page
+  #     widgets: !include display/co2_sensor_page/co2_sensor_page.yaml
+  #   - id: hcho_sensor_page
+  #     widgets: !include display/hcho_sensor_page/hcho_sensor_page.yaml
+  #   - id: tvoc_sensor_page
+  #     widgets: !include display/tvoc_sensor_page/tvoc_sensor_page.yaml
 
 interval:
   - interval: 500ms
@@ -451,3 +457,185 @@ interval:
             
             ESP_LOGD("AirQuality", "Updated UI for: %s (%.2f)", quality_text, pm25);
           }
+    
+  # Page mode switching timer - changes display mode every 20 seconds
+  - interval: 20s
+    then:
+      - lambda: |-
+          static int display_mode = 0;
+          static const int total_modes = 5;
+          
+          // Mode names for debugging
+          const char* mode_names[] = {
+            "all_sensors", "pm_focus", "co2_focus", "hcho_focus", "tvoc_focus"
+          };
+          
+          // Move to next mode
+          display_mode = (display_mode + 1) % total_modes;
+          
+          ESP_LOGD("DisplayMode", "Switching to mode %d: %s", display_mode, mode_names[display_mode]);
+          
+          // Hide all components first (set default visibility to false)
+          lv_obj_add_flag(id(co2_arc), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(co2_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(hcho_arc), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(hcho_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(humidity_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(air_quality_icon), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(pm_image), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(pm25_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(temp_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(tvoc_arc), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(tvoc_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(pm_graph_container), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(co2_graph_container), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(hcho_graph_container), LV_OBJ_FLAG_HIDDEN);
+          lv_obj_add_flag(id(tvoc_graph_container), LV_OBJ_FLAG_HIDDEN);
+          
+          // Show and position components based on current mode
+          switch(display_mode) {
+            case 0: // All sensors mode
+              // Show all sensor components
+              lv_obj_clear_flag(id(co2_arc), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(co2_arc), 45, 400);
+              lv_obj_set_size(id(co2_arc), 100, 100);
+              
+              lv_obj_clear_flag(id(co2_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(co2_value_label_obj), 100, 330);
+              lv_obj_set_size(id(co2_value_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(hcho_arc), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(hcho_arc), 445, 400);
+              lv_obj_set_size(id(hcho_arc), 100, 100);
+              
+              lv_obj_clear_flag(id(hcho_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(hcho_value_label_obj), 500, 330);
+              lv_obj_set_size(id(hcho_value_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(humidity_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(humidity_display_label_obj), 435, 420);
+              lv_obj_set_size(id(humidity_display_label_obj), 120, 40);
+              
+              lv_obj_clear_flag(id(air_quality_icon), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(air_quality_icon), 45, 155);
+              lv_obj_set_size(id(air_quality_icon), 120, 120);
+              
+              lv_obj_clear_flag(id(pm_image), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(pm_image), 120, 170);
+              lv_obj_set_size(id(pm_image), 220, 40);
+              
+              lv_obj_clear_flag(id(pm25_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(pm25_value_label_obj), 130, 220);
+              lv_obj_set_size(id(pm25_value_label_obj), 195, 40);
+              
+              lv_obj_clear_flag(id(temp_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(temp_display_label_obj), 230, 420);
+              lv_obj_set_size(id(temp_display_label_obj), 120, 40);
+              
+              lv_obj_clear_flag(id(tvoc_arc), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(tvoc_arc), 445, 270);
+              lv_obj_set_size(id(tvoc_arc), 100, 100);
+              
+              lv_obj_clear_flag(id(tvoc_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(tvoc_value_label_obj), 500, 200);
+              lv_obj_set_size(id(tvoc_value_label_obj), 220, 40);
+
+              lv_obj_add_flag(id(pm_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_add_flag(id(co2_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_add_flag(id(hcho_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_add_flag(id(tvoc_graph_container), LV_OBJ_FLAG_HIDDEN);
+              break;
+              
+            case 1: // PM2.5 focus mode
+              lv_obj_clear_flag(id(humidity_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(humidity_display_label_obj), 100, 380);
+              lv_obj_set_size(id(humidity_display_label_obj), 200, 40);
+              
+              lv_obj_clear_flag(id(air_quality_icon), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(air_quality_icon), 45, 155);
+              
+              lv_obj_clear_flag(id(pm_image), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(pm_image), 120, 170);
+              lv_obj_set_size(id(pm_image), 220, 40);
+              
+              lv_obj_clear_flag(id(pm25_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(pm25_value_label_obj), 130, 220);
+              lv_obj_set_size(id(pm25_value_label_obj), 195, 40);
+              
+              lv_obj_clear_flag(id(temp_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(temp_display_label_obj), 95, 330);
+              lv_obj_set_size(id(temp_display_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(pm_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(pm_graph_container), 345, 175);
+              lv_obj_set_size(id(pm_graph_container), 430, 260);
+              break;
+              
+            case 2: // CO2 focus mode
+              lv_obj_clear_flag(id(co2_arc), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(co2_arc), 45, 270);
+              lv_obj_set_size(id(co2_arc), 100, 100);
+              
+              lv_obj_clear_flag(id(co2_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(co2_value_label_obj), 100, 201);
+              lv_obj_set_size(id(co2_value_label_obj), 220, 42);
+              
+              lv_obj_clear_flag(id(humidity_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(humidity_display_label_obj), 100, 380);
+              lv_obj_set_size(id(humidity_display_label_obj), 200, 40);
+              
+              lv_obj_clear_flag(id(temp_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(temp_display_label_obj), 95, 330);
+              lv_obj_set_size(id(temp_display_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(co2_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(co2_graph_container), 345, 175);
+              lv_obj_set_size(id(co2_graph_container), 430, 260);
+              break;
+              
+            case 3: // HCHO focus mode
+              lv_obj_clear_flag(id(hcho_arc), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(hcho_arc), 45, 270);
+              lv_obj_set_size(id(hcho_arc), 100, 100);
+              
+              lv_obj_clear_flag(id(hcho_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(hcho_value_label_obj), 100, 201);
+              lv_obj_set_size(id(hcho_value_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(humidity_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(humidity_display_label_obj), 100, 380);
+              lv_obj_set_size(id(humidity_display_label_obj), 200, 40);
+              
+              lv_obj_clear_flag(id(temp_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(temp_display_label_obj), 95, 330);
+              lv_obj_set_size(id(temp_display_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(hcho_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(hcho_graph_container), 345, 175);
+              lv_obj_set_size(id(hcho_graph_container), 430, 260);
+              break;
+              
+            case 4: // TVOC focus mode
+              lv_obj_clear_flag(id(tvoc_arc), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(tvoc_arc), 45, 270);
+              lv_obj_set_size(id(tvoc_arc), 100, 100);
+              
+              lv_obj_clear_flag(id(tvoc_value_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(tvoc_value_label_obj), 100, 201);
+              lv_obj_set_size(id(tvoc_value_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(humidity_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(humidity_display_label_obj), 100, 380);
+              lv_obj_set_size(id(humidity_display_label_obj), 200, 40);
+              
+              lv_obj_clear_flag(id(temp_display_label_obj), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(temp_display_label_obj), 95, 330);
+              lv_obj_set_size(id(temp_display_label_obj), 220, 40);
+              
+              lv_obj_clear_flag(id(tvoc_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_set_pos(id(tvoc_graph_container), 345, 175);
+              lv_obj_set_size(id(tvoc_graph_container), 430, 260);
+              break;
+          }
+          
+          ESP_LOGD("DisplayMode", "Layout updated for mode: %s", mode_names[display_mode]);

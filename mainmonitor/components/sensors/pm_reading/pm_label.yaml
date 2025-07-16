@@ -1,0 +1,20 @@
+obj:
+  id: pm25_value_label_obj
+  x: 130
+  y: 220
+  width: 195
+  height: 40
+  bg_color: 0xD9D8D8
+  bg_opa : 40%
+  border_color: 0xD9D8D8
+  border_width: 1
+  clip_corner : false
+  radius : 100 
+  scrollbar_mode: 'OFF'
+  #scroll_dir: NONE
+  widgets:
+    - label:
+        id: pm25_value_label
+        text: 'PM2.5: 00.00 mg/m3'
+        text_color: 0x898989
+        align: RIGHT_MID
