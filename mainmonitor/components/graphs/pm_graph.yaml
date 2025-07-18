@@ -89,7 +89,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_2
@@ -99,7 +99,7 @@ obj:
         height: 20
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_3
@@ -109,7 +109,7 @@ obj:
         height: 190
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_4
@@ -119,7 +119,7 @@ obj:
         height: 90
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_5
@@ -129,7 +129,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_6
@@ -139,7 +139,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_7
@@ -149,7 +149,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_8
@@ -159,7 +159,7 @@ obj:
         height: 120
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_9
@@ -169,7 +169,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_10
@@ -179,7 +179,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_11
@@ -189,7 +189,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_12
@@ -199,7 +199,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_13
@@ -209,7 +209,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_14
@@ -219,7 +219,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_15
@@ -229,7 +229,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_16
@@ -239,7 +239,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_17
@@ -249,7 +249,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_18
@@ -259,7 +259,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_19
@@ -269,7 +269,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_20
@@ -279,7 +279,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_21
@@ -289,7 +289,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_22
@@ -299,7 +299,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_23
@@ -309,7 +309,7 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50
         
     - obj:
         id: pm_bar_24
@@ -319,4 +319,4 @@ obj:
         height: 70
         bg_color: 0x347cd7
         border_width: 0
-        radius: 2
+        radius: 50

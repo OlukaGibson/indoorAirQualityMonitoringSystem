@@ -496,6 +496,10 @@ interval:
           switch(display_mode) {
             case 0: // All sensors mode
               // Show all sensor components
+              lv_obj_add_flag(id(pm_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_add_flag(id(co2_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_add_flag(id(hcho_graph_container), LV_OBJ_FLAG_HIDDEN);
+              lv_obj_add_flag(id(tvoc_graph_container), LV_OBJ_FLAG_HIDDEN);
               lv_obj_clear_flag(id(co2_arc), LV_OBJ_FLAG_HIDDEN);
               lv_obj_set_pos(id(co2_arc), 45, 400);
               lv_obj_set_size(id(co2_arc), 100, 100);
