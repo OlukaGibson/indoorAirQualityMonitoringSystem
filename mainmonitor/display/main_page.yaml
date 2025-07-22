@@ -1,5 +1,5 @@
 # LVGL widgets configuration - should be under a widgets key
-widgets:
+# widgets:
   # navbar (always visible)
   - !include ../components/navbar/logo.yaml
   - !include ../components/navbar/separator.yaml

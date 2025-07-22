@@ -1,0 +1,305 @@
+# MENU PAGE CONFIGURATION
+# - !include ../components/navbar/logo.yaml
+- image:
+    src: airqo_logo
+    align: TOP_LEFT
+    opa: 100%
+    x: 35
+    y: 6
+    on_click:
+      - lvgl.page.show: main_page
+
+# - !include ../components/navbar/time.yaml
+- obj:
+    x: 0
+    y: 6
+    width: 142
+    height: 40
+    align: TOP_MID
+    bg_color: 0xe7eaee
+    scrollbar_mode: 'OFF'
+    widgets:
+      - label:
+          text: '17:17'
+          text_color: 0x000000
+          align: CENTER
+          # text_font: roboto_medium
+
+# - !include ../components/navbar/separator.yaml
+- line:
+    points:
+      - 0, 60
+      - 795, 60
+    line_width: 2
+    line_color: 0x347cd7
+    line_rounded: true
+
+# - button:
+#     id: back_button
+#     x: 31
+#     y: 81
+#     width: 80
+#     height: 30
+#     bg_color: 0x2196F3
+#     on_click:
+#       - lvgl.page.show: main_page
+#     widgets:
+#       - label:
+#           text: "Back"
+#           text_color: 0xFFFFFF
+#           align: CENTER
+
+- obj:
+    x: 321
+    y: 95
+    width: 157
+    height: 40
+    bg_color: 0xf0f0f0
+    scrollbar_mode: 'OFF'
+    radius: 50
+    bg_opa: 40%
+    border_color: 0xdadada
+    border_width: 1
+    widgets:
+      - label:
+          text: "Settings"
+          text_color: 0x3a84fd
+          align: CENTER
+
+#network settings
+- obj:
+    x: 100
+    y: 189
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 100
+    widgets:
+      - label:
+          text: "Network"
+          text_color: 0x0d0d0d
+          align: CENTER
+
+- obj:
+    x: 286
+    y: 209
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 50
+    on_click:
+      - lvgl.page.show: wifi_page
+    widgets:
+      - label:
+          text: "Wi-Fi"
+          text_color: 0xffffff
+          align: CENTER
+
+- obj:
+    x: 508
+    y: 209
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 50
+    on_click:
+      - lvgl.page.show: my_devices_page
+    widgets:
+      - label:
+          text: "My Devices"
+          text_color: 0xffffff
+          align: CENTER
+
+
+# Performance settings
+- obj:
+    x: 100
+    y: 277
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 100
+    widgets:
+      - label:
+          text: "Performance"
+          text_color: 0x0d0d0d
+          align: CENTER
+
+- obj:
+    x: 286
+    y: 308
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 50
+    on_click:
+      - lvgl.page.show: screen_page
+    widgets:
+      - label:
+          text: "Screen"
+          text_color: 0xffffff
+          align: CENTER
+
+- obj:
+    x: 508
+    y: 308
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 50
+    on_click:
+      - lvgl.page.show: sensor_page
+    widgets:
+      - label:
+          text: "Sensor"
+          text_color: 0xffffff
+          align: CENTER
+
+
+# About settings
+- obj:
+    x: 100
+    y: 387
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 100
+    widgets:
+      - label:
+          text: "About"
+          text_color: 0x0d0d0d
+          align: CENTER
+
+- obj:
+    x: 286
+    y: 407
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 50
+    on_click:
+      - lvgl.page.show: contact_us
+    widgets:
+      - label:
+          text: "About AirQo"
+          text_color: 0xffffff
+          align: CENTER
+
+- obj:
+    x: 508
+    y: 407
+    width: 157
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    radius: 50
+    on_click:
+      - lvgl.page.show: icon_index_page
+    widgets:
+      - label:
+          text: "AirQo AQI Icon"
+          text_color: 0xffffff
+          align: CENTER
+# - obj:
+#     x: 289
+#     y: 407
+#     width: 130
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 50
+#     widgets:
+#       - label:
+#           text: "Location"
+#           text_color: 0xffffff
+#           align: CENTER
+
+# - obj:
+#     x: 452
+#     y: 407
+#     width: 130
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 50
+#     widgets:
+#       - label:
+#           text: "Icon Index"
+#           text_color: 0xffffff
+#           align: CENTER
+
+# - obj:
+#     x: 615
+#     y: 407
+#     width: 130
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 50
+#     widgets:
+#       - label:
+#           text: "Contact us"
+#           text_color: 0xffffff
+#           align: CENTER
+
+# Page title
+# - label:
+#     id: about_title
+#     x: 50%
+#     y: 30%
+#     align: CENTER
+#     text: "About AirQo"
+#     text_color: 0x333333
+
+# # Placeholder content
+# - label:
+#     id: about_content
+#     x: 50%
+#     y: 50%
+#     align: CENTER
+#     text: "Indoor Air Quality Monitoring System"
+#     text_color: 0x666666

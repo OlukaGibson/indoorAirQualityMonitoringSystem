@@ -1,5 +1,28 @@
 lvgl:
-  pages: !include display/main_page.yaml
+  pages:
+    - id: main_page
+      widgets: !include display/main_page.yaml
+    - id: menu_page
+      widgets: !include display/menu_page.yaml
+    # the setting page
+    # network settings
+    - id: wifi_page
+      widgets: !include display/network/wifi_page.yaml
+    - id: my_devices_page
+      widgets: !include display/network/my_devices_page.yaml
+    
+    #performance settings
+    - id: screen_page
+      widgets: !include display/performance/screen_page.yaml
+    - id: sensor_page
+      widgets: !include display/performance/sensor_page.yaml
+    
+    # about settings
+    - id: contact_us
+      widgets: !include display/about/contact_us.yaml
+    - id: icon_index_page
+      widgets: !include display/about/icon_index_page.yaml
+
   # pages:
   #   - id: all_sensors_page
   #     widgets: !include display/all_sensors/all_sensors.yaml

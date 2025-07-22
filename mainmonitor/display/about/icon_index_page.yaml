@@ -1,0 +1,65 @@
+- image:
+    src: airqo_logo
+    align: TOP_LEFT
+    opa: 100%
+    x: 35
+    y: 6
+    on_click:
+      - lvgl.page.show: main_page
+
+# - !include ../components/navbar/time.yaml
+- obj:
+    x: 0
+    y: 6
+    width: 142
+    height: 40
+    align: TOP_MID
+    bg_color: 0xe7eaee
+    scrollbar_mode: 'OFF'
+    widgets:
+      - label:
+          text: '17:17'
+          text_color: 0x000000
+          align: CENTER
+          # text_font: roboto_medium
+
+# - !include ../components/navbar/separator.yaml
+- line:
+    points:
+      - 0, 60
+      - 795, 60
+    line_width: 2
+    line_color: 0x347cd7
+    line_rounded: true
+
+- button:
+    # id: back_button
+    x: 31
+    y: 81
+    width: 80
+    height: 30
+    bg_color: 0x2196F3
+    on_click:
+      - lvgl.page.show: menu_page
+    widgets:
+      - label:
+          text: "Back"
+          text_color: 0xFFFFFF
+          align: CENTER
+
+- obj:
+    x: 321
+    y: 95
+    width: 157
+    height: 40
+    bg_color: 0xf0f0f0
+    scrollbar_mode: 'OFF'
+    radius: 50
+    bg_opa: 40%
+    border_color: 0xdadada
+    border_width: 1
+    widgets:
+      - label:
+          text: "About AirQo"
+          text_color: 0x3a84fd
+          align: CENTER
