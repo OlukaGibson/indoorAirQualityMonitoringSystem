@@ -60,6 +60,6 @@
     border_width: 1
     widgets:
       - label:
-          text: "AirQo AQI Icon Index"
+          text: "About AirQo"
           text_color: 0x3a84fd
           align: CENTER
