@@ -63,3 +63,28 @@
           text: "About AirQo"
           text_color: 0x3a84fd
           align: CENTER
+
+# Info Section
+- obj:
+    x: 80
+    y: 150
+    width: 640
+    height: 320
+    bg_color: 0xffffff
+    radius: 20
+    border_color: 0x347cd7
+    border_width: 0
+    shadow_width: 0
+    shadow_color: 0xe7eaee
+    scrollbar_mode: 'OFF'
+    widgets:
+
+      - label:
+          text: "AirQo is anair quality monitoring initiative based at Makerere University in Uganda. Launched in 2015, it develops low-cost air sensors to provide accurate, real-time data on air pollution—specifically particulate matter (PM2.5 and PM10). These sensors are designed for African cities, where traditional monitoring is limited due to high costs and infrastructure challenges. AirQo deploys both static and mobile monitors (including ones on boda-bodas) to map pollution patterns across urban areas. The initiative offers a free mobile app and online dashboard, enabling communities, researchers, and policymakers to access localized air quality data. This data supports informed decision-making, public awareness, and policy development around environmental health. AirQo's work extends beyond Uganda to countries like Kenya, Nigeria, and Senegal, with over 200 sensors across 16+ cities.AirQo has earned international recognition, winning the Google AI Impact Challenge and other awards for its innovative, African-led approach. By combining technology, artificial intelligence, and community engagement, it aims to reduce the impact of air pollution and improve public health across the continent. Through accessible data, AirQo empowers citizens and governments to take action toward cleaner, healthier urban environments in Africa."
+          text_color: 0x333333
+          # text_font: roboto_medium
+          align: TOP_LEFT
+          x: 20
+          y: 45
+          width: 600
+          height: 300

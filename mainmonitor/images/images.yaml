@@ -42,3 +42,40 @@ image:
     type: RGB565
     transparency: alpha_channel
     resize: 120x120
+
+  # Additional image for the Index page
+  - file: "mainmonitor/images/airqualityicons/GoodAir.png"
+    id: GoodAirInfo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
+
+  - file: "mainmonitor/images/airqualityicons/Moderate.png"
+    id: ModerateInfo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
+
+  - file: "mainmonitor/images/airqualityicons/UnhealthySG.png"
+    id: UnhealthySGInfo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
+
+  - file: "mainmonitor/images/airqualityicons/Unhealthy.png"
+    id: UnhealthyInfo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
+
+  - file: "mainmonitor/images/airqualityicons/VeryUnhealthy.png"
+    id: VeryUnhealthyInfo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
+
+  - file: "mainmonitor/images/airqualityicons/Hazardous.png"
+    id: HazardousInfo
+    type: RGB565
+    transparency: alpha_channel
+    resize: 80x80
