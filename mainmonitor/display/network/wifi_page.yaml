@@ -1,65 +1,218 @@
-- image:
-    src: airqo_logo
-    align: TOP_LEFT
-    opa: 100%
-    x: 35
-    y: 6
-    on_click:
-      - lvgl.page.show: main_page
-
-# - !include ../components/navbar/time.yaml
+# WiFi Settings Container
 - obj:
+    id: wifi_settings
     x: 0
-    y: 6
-    width: 142
-    height: 40
-    align: TOP_MID
-    bg_color: 0xe7eaee
-    scrollbar_mode: 'OFF'
+    y: 0
+    width: 800
+    height: 480
+    clickable: false
+    scrollable: false
+    scroll_chain_hor: false
+    scroll_chain_ver: false
+    scroll_elastic: false
+    scroll_momentum: false
+    scroll_with_arrow: false
     widgets:
-      - label:
-          text: '17:17'
-          text_color: 0x000000
-          align: CENTER
-          # text_font: roboto_medium
+      - image:
+          src: airqo_logo
+          align: TOP_LEFT
+          opa: 100%
+          x: 35
+          y: 6
+          on_click:
+            - lvgl.page.show: main_page
 
-# - !include ../components/navbar/separator.yaml
-- line:
-    points:
-      - 0, 60
-      - 795, 60
-    line_width: 2
-    line_color: 0x347cd7
-    line_rounded: true
+      - obj:
+          x: 0
+          y: 6
+          width: 142
+          height: 40
+          align: TOP_MID
+          bg_color: 0xe7eaee
+          scrollbar_mode: 'OFF'
+          widgets:
+            - label:
+                text: '17:17'
+                text_color: 0x000000
+                align: CENTER
+                # text_font: roboto_medium
 
-- button:
-    # id: back_button
-    x: 31
-    y: 81
-    width: 80
-    height: 30
-    bg_color: 0x2196F3
-    on_click:
-      - lvgl.page.show: menu_page
-    widgets:
-      - label:
-          text: "Back"
-          text_color: 0xFFFFFF
-          align: CENTER
+      - line:
+          points:
+            - 0, 60
+            - 795, 60
+          line_width: 2
+          line_color: 0x347cd7
+          line_rounded: true
 
-- obj:
-    x: 321
-    y: 95
-    width: 157
-    height: 40
-    bg_color: 0xf0f0f0
-    scrollbar_mode: 'OFF'
-    radius: 50
-    bg_opa: 40%
-    border_color: 0xdadada
-    border_width: 1
-    widgets:
-      - label:
-          text: "Wi-Fi"
-          text_color: 0x3a84fd
-          align: CENTER
+      - button:
+          # id: back_button
+          x: 31
+          y: 81
+          width: 80
+          height: 30
+          bg_color: 0x2196F3
+          on_click:
+            - lvgl.page.show: menu_page
+          widgets:
+            - label:
+                text: "Back"
+                text_color: 0xFFFFFF
+                align: CENTER
+
+      - obj:
+          x: 321
+          y: 80
+          width: 157
+          height: 40
+          bg_color: 0xf0f0f0
+          scrollbar_mode: 'OFF'
+          radius: 50
+          bg_opa: 40%
+          border_color: 0xdadada
+          border_width: 1
+          widgets:
+            - label:
+                text: "Wi-Fi"
+                text_color: 0x3a84fd
+                align: CENTER
+
+      # Available Networks List (using scrollable container)
+      - obj:
+          id: available_networks
+          x: 142
+          y: 140
+          width: 512
+          height: 235
+          scrollable: true
+          scroll_elastic: false
+          widgets:
+            # Network items will be dynamically added here
+            - button:
+                id: network_item_1
+                x: 20
+                y: 0
+                width: 400
+                height: 40
+                widgets:
+                  - label:
+                      text: "Sample Network 1"
+                      align: LEFT_MID
+                      x: 10
+            - button:
+                id: network_item_2
+                x: 20
+                y: 45
+                width: 400
+                height: 40
+                widgets:
+                  - label:
+                      text: "Sample Network 2"
+                      align: LEFT_MID
+                      x: 10
+
+      # Disconnect Network Button
+      - button:
+          id: disconnect_network
+          x: 554
+          y: 381
+          width: 100
+          height: 40
+          widgets:
+            - label:
+                text: "Disconnect"
+                align: CENTER
+
+      # Auto-connect Checkbox
+      - checkbox:
+          id: auto_connect_checkbox
+          x: 142
+          y: 381
+          width: 137
+          height: 28
+          text: "Auto-connect"
+          indicator:
+            checked:
+              text_color: 0xFFFFFF
+              text_opa: 100%
+              text_font: montserrat_30
+
+      # WiFi Switch
+      - switch:
+          id: wifi_switch
+          x: 663
+          y: 130
+          width: 50
+          height: 25
+
+      # SSID Connect Panel (Hidden by default)
+      - obj:
+          id: ssid_connect_panel
+          x: 175
+          y: -16
+          width: 50
+          height: 151
+          hidden: true
+          widgets:
+            # SSID Name Label
+            - label:
+                id: ssid_name
+                x: 38
+                y: -6
+                text: "SSID :"
+
+            # SSID Password Label
+            - label:
+                id: ssid_password
+                x: 38
+                y: 20
+                text: "Password :"
+
+            # SSID Password Text Area
+            - textarea:
+                id: ssid_password_text
+                x: 125
+                y: 7
+                width: 218
+                height: 42
+                max_length: 128
+                placeholder_text: "Enter the ssid password"
+                one_line: false
+                password_mode: false
+
+            # SSID Connect Button
+            - button:
+                id: ssid_connect
+                x: 14
+                y: 60
+                width: 100
+                height: 40
+                bg_color: 0x2196F3
+                widgets:
+                  - label:
+                      text: "Connect"
+                      align: CENTER
+
+            # SSID Connect Cancel Button
+            - button:
+                id: ssid_connect_cancel
+                x: 223
+                y: 60
+                width: 100
+                height: 40
+                widgets:
+                  - label:
+                      text: "Cancel"
+                      align: CENTER
+
+      # SSID Password Keyboard (Hidden by default)
+      - keyboard:
+          id: ssid_password_keyboard
+          x: 134
+          y: 134
+          width: 512
+          height: 149
+          hidden: true
+          border_color: 0x000000
+          border_opa: 100%
+          border_width: 0

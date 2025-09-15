@@ -11,11 +11,14 @@ lvgl:
     - id: my_devices_page
       widgets: !include display/network/my_devices_page.yaml
     
-    #performance settings
-    - id: screen_page
-      widgets: !include display/performance/screen_page.yaml
-    - id: sensor_page
-      widgets: !include display/performance/sensor_page.yaml
+    # #performance settings
+    # - id: screen_page
+    #   widgets: !include display/performance/screen_page.yaml
+    # - id: sensor_page
+    #   widgets: !include display/performance/sensor_page.yaml
+
+    - id: historical_data_page
+      widgets: !include display/historical_data/historical_data_page.yaml
     
     # about settings
     - id: contact_us

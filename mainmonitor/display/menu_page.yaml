@@ -66,29 +66,29 @@
           text_color: 0x3a84fd
           align: CENTER
 
-#network settings
-- obj:
-    x: 100
-    y: 189
-    width: 157
-    height: 40
-    bg_color: 0x3a84fd
-    bg_opa : 40%
-    border_color: 0x3a84fd
-    border_width: 1
-    scrollbar_mode: 'OFF'
-    radius: 100
-    widgets:
-      - label:
-          text: "Network"
-          text_color: 0x0d0d0d
-          align: CENTER
+# #network settings
+# - obj:
+#     x: 100
+#     y: 189
+#     width: 157
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 100
+#     widgets:
+#       - label:
+#           text: "Network"
+#           text_color: 0x0d0d0d
+#           align: CENTER
 
 - obj:
-    x: 286
-    y: 209
-    width: 157
-    height: 40
+    x: 79
+    y: 178
+    width: 200
+    height: 50
     bg_color: 0x3a84fd
     bg_opa : 40%
     border_color: 0x3a84fd
@@ -104,10 +104,10 @@
           align: CENTER
 
 - obj:
-    x: 508
-    y: 209
-    width: 157
-    height: 40
+    x: 512
+    y: 178
+    width: 200
+    height: 50
     bg_color: 0x3a84fd
     bg_opa : 40%
     border_color: 0x3a84fd
@@ -124,85 +124,88 @@
 
 
 # Performance settings
-- obj:
-    x: 100
-    y: 277
-    width: 157
-    height: 40
-    bg_color: 0x3a84fd
-    bg_opa : 40%
-    border_color: 0x3a84fd
-    border_width: 1
-    scrollbar_mode: 'OFF'
-    radius: 100
-    widgets:
-      - label:
-          text: "Performance"
-          text_color: 0x0d0d0d
-          align: CENTER
+# - obj:
+#     x: 100
+#     y: 277
+#     width: 157
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 100
+#     widgets:
+#       - label:
+#           text: "Performance"
+#           text_color: 0x0d0d0d
+#           align: CENTER
 
+
+#hide for now
 - obj:
-    x: 286
-    y: 308
-    width: 157
-    height: 40
+    x: 287
+    y: 266
+    width: 200
+    height: 50
     bg_color: 0x3a84fd
     bg_opa : 40%
     border_color: 0x3a84fd
     border_width: 1
     scrollbar_mode: 'OFF'
     radius: 50
-    on_click:
-      - lvgl.page.show: screen_page
+    # hidden: true
+    # on_click:
+    #   - lvgl.page.show: historical_data_page
     widgets:
       - label:
-          text: "Screen"
+          text: "Historical Data"
           text_color: 0xffffff
           align: CENTER
 
-- obj:
-    x: 508
-    y: 308
-    width: 157
-    height: 40
-    bg_color: 0x3a84fd
-    bg_opa : 40%
-    border_color: 0x3a84fd
-    border_width: 1
-    scrollbar_mode: 'OFF'
-    radius: 50
-    on_click:
-      - lvgl.page.show: sensor_page
-    widgets:
-      - label:
-          text: "Sensor"
-          text_color: 0xffffff
-          align: CENTER
+# - obj:
+#     x: 508
+#     y: 308
+#     width: 157
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 50
+#     on_click:
+#       - lvgl.page.show: sensor_page
+#     widgets:
+#       - label:
+#           text: "Sensor"
+#           text_color: 0xffffff
+#           align: CENTER
 
 
 # About settings
-- obj:
-    x: 100
-    y: 387
-    width: 157
-    height: 40
-    bg_color: 0x3a84fd
-    bg_opa : 40%
-    border_color: 0x3a84fd
-    border_width: 1
-    scrollbar_mode: 'OFF'
-    radius: 100
-    widgets:
-      - label:
-          text: "About"
-          text_color: 0x0d0d0d
-          align: CENTER
+# - obj:
+#     x: 100
+#     y: 387
+#     width: 157
+#     height: 40
+#     bg_color: 0x3a84fd
+#     bg_opa : 40%
+#     border_color: 0x3a84fd
+#     border_width: 1
+#     scrollbar_mode: 'OFF'
+#     radius: 100
+#     widgets:
+#       - label:
+#           text: "About"
+#           text_color: 0x0d0d0d
+#           align: CENTER
 
 - obj:
-    x: 286
-    y: 407
-    width: 157
-    height: 40
+    x: 79
+    y: 335
+    width: 200
+    height: 50
     bg_color: 0x3a84fd
     bg_opa : 40%
     border_color: 0x3a84fd
@@ -218,10 +221,10 @@
           align: CENTER
 
 - obj:
-    x: 508
-    y: 407
-    width: 157
-    height: 40
+    x: 512
+    y: 335
+    width: 200
+    height: 50
     bg_color: 0x3a84fd
     bg_opa : 40%
     border_color: 0x3a84fd
@@ -235,6 +238,25 @@
           text: "AirQo AQI Icon"
           text_color: 0xffffff
           align: CENTER
+
+- obj:
+    x: 0
+    y: 440
+    width: 800
+    height: 40
+    bg_color: 0x3a84fd
+    bg_opa : 40%
+    border_color: 0x3a84fd
+    border_width: 1
+    scrollbar_mode: 'OFF'
+    # radius: 50
+    widgets:
+      - label:
+          text: "Clean air for all African cities. AirQo"
+          text_color: 0x000000
+          align: CENTER
+
+
 # - obj:
 #     x: 289
 #     y: 407

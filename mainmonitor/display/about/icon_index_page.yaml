@@ -1,3 +1,11 @@
+- obj:
+    x: 0
+    y: 0
+    width: 800
+    height: 480
+    bg_color: 0xFFFFFF
+    scrollbar_mode: 'OFF'
+
 - image:
     src: airqo_logo
     align: TOP_LEFT
@@ -60,7 +68,7 @@
     border_width: 1
     widgets:
       - label:
-          text: "AirQo AQI Icon Index"
+          text: "AQI Icon Index"
           text_color: 0x3a84fd
           align: CENTER
 
@@ -70,9 +78,11 @@
     y: 155
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -85,9 +95,11 @@
     y: 185
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -107,9 +119,11 @@
     y: 255
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -122,9 +136,11 @@
     y: 285
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -144,13 +160,15 @@
     y: 375
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
-          text: "Air Quality is Moderate"
+          text: "Unhealthy for Sensitive Groups"
           text_color: 0x000000
           align: CENTER
 
@@ -159,13 +177,15 @@
     y: 405
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
-          text: "9.1mg/m3 - 35.4mg/m3"
+          text: "35.5 mg/m3 - 55.4 mg/m3"
           text_color: 0x000000
           align: CENTER
 
@@ -181,9 +201,11 @@
     y: 155
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -196,9 +218,11 @@
     y: 185
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -216,11 +240,13 @@
 - obj:
     x: 510
     y: 255
-    width: 210
+    width: 250
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -231,11 +257,13 @@
 - obj:
     x: 520
     y: 285
-    width: 200
+    width: 240
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -255,9 +283,11 @@
     y: 375
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
@@ -270,13 +300,15 @@
     y: 405
     width: 210
     height: 30
-    bg_color: 0xFFFFFF
+    bg_color: 0xe0e0e0
+    border_color: 0xD5D5D5
+    radius : 100 
     scrollbar_mode: 'OFF'
-    border_width: 0
+    border_width: 1
     shadow_width: 0
     widgets:
       - label:
-          text: "225.5μg/m3 +"
+          text: "225.5 mg/m3 +"  #μ
           text_color: 0x000000
           align: CENTER
 
@@ -285,57 +317,3 @@
     opa: 100%
     x: 450
     y: 370
-
-# image:
-#   src: airqo_logo
-#   align: TOP_LEFT
-#   opa: 100%
-#   x: 35
-#   y: 6
-#   id: logo_button
-
-
-# // Update image and text based on value
-#           if (pm25 <= 9.00) {
-#             quality_text = "Good";
-#             text_color = 0x00b016;
-#             bg_color = 0x68D36C;
-#             lv_img_set_src(id(air_quality_icon), id(GoodAir));
-#             ESP_LOGD("AirQuality", "Setting image to GoodAir");
-#           } else if (pm25 <= 55.40) {
-#             quality_text = "Moderate";
-#             text_color = 0xfcbf01;
-#             bg_color = 0xfec81d;
-#             lv_img_set_src(id(air_quality_icon), id(Moderate));
-#             ESP_LOGD("AirQuality", "Setting image to Moderate");
-#           } else if (pm25 <= 125.40) {
-#             quality_text = "Unhealthy for All";
-#             text_color = 0xe70808;
-#             bg_color = 0xf3624e;
-#             lv_img_set_src(id(air_quality_icon), id(Unhealthy));
-#             ESP_LOGD("AirQuality", "Setting image to Unhealthy");
-#           } else if (pm25 <= 225.40) {
-#             quality_text = "Very Unhealthy";
-#             text_color = 0xaa4ef3;
-#             bg_color = 0xc27ff7;
-#             lv_img_set_src(id(air_quality_icon), id(VeryUnhealthy));
-#             ESP_LOGD("AirQuality", "Setting image to VeryUnhealthy");
-#           } else {
-#             quality_text = "Hazardous";
-#             text_color = 0xe124e1;
-#             bg_color = 0xf77fe4; 
-#             lv_img_set_src(id(air_quality_icon), id(Hazardous));
-#             ESP_LOGD("AirQuality", "Setting image to Hazardous");
-#           }
-          
-#           // Update the label text and colors if found
-#           if (air_quality_label != nullptr) {
-#             lv_label_set_text(air_quality_label, quality_text);
-#             lv_obj_set_style_text_color(air_quality_label, lv_color_hex(text_color), LV_PART_MAIN | LV_STATE_DEFAULT);
-            
-#             // Update container background color
-#             lv_obj_set_style_bg_color(air_quality_container, lv_color_hex(bg_color), LV_PART_MAIN | LV_STATE_DEFAULT);
-#             lv_obj_set_style_border_color(air_quality_container, lv_color_hex(bg_color), LV_PART_MAIN | LV_STATE_DEFAULT);
-            
-#             ESP_LOGD("AirQuality", "Updated UI for: %s (%.2f)", quality_text, pm25);
-#           }

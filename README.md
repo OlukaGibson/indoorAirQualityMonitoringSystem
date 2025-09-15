@@ -63,57 +63,57 @@ interval:
 
 Air Quality
 
-Name - 
+Label - 
 Image -
 Range -
 Text_colour - 
-Bg_colour - 
+bg and border color - 
 
 Good
-Name - Good 
-Image - GoodAir.png
+Label - Good 
+Image - GoodAir
 Range - 0.00 - 9.00
 Text_colour - 0x00b016
-Bg_colour - 0x68D36C
+bg and border color - 0x68D36C
 
 
 Moderate
-Name - Moderate
-Image - Moderate.png
-Range - 9.01 - 55.40
+Label - Moderate
+Image - Moderate
+Range - 9.01 - 35.40
 Text_colour - 0xfcbf01
-Bg_colour - 0xfec81d
+bg and border color - 0xfec81d
 
 Unhealthy for Sensitive Groups
-Name - Unhealthy for Sensitive Groups
-Image - UnhealthySG.png
+Label - Unhealthy for Sensitive Groups
+Image - UnhealthySG
 Range - 35.41 - 55.40
 Text_colour - 
-Bg_colour - 
+bg and border color - 
 
 
 Unhealthy
-Name - Unhealthy for All
-Image - Unhealthy.png
+Label - Unhealthy for All
+Image - Unhealthy
 Range - 55.41 - 125.40
 Text_colour - 0xe70808
-Bg_colour - 0xf3624e
+bg and border color - 0xf3624e
 
 
 Very Unhealthy
-Name - Very Unhealthy
-Image - VeryUnhealthy.png
+Label - Very Unhealthy
+Image - VeryUnhealthy
 Range - 125.41 - 225.40
 Text_colour - 0xaa4ef3
-Bg_colour - 0xc27ff7
+bg and border color - 0xc27ff7
 
 
 Hazardous
-Name - Hazardous
-Image - Hazardous.png
+Label - Hazardous
+Image - Hazardous
 Range -225.41 on words
 Text_colour - 0x898989
-Bg_colour - 0xD9D8D8
+bg and border color - 0xD9D8D8
 
 
 {

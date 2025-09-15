@@ -2,8 +2,8 @@ arc:
   x: 45
   y: 400
   id: co2_arc
-  # value_width: 20
-  # arc_width: 20
+  # value_width: 30
+  # arc_width: 30
   value: 25
   min_value: 0
   max_value: 1000

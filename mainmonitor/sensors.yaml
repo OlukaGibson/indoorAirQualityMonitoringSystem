@@ -95,7 +95,7 @@ sensor:
       
       # Update the arc using lambda directly
       - lambda: |-
-          lv_arc_set_value(id(hcho_arc), (int)x);
+          lv_arc_set_value(id(hcho_arc), (int)(10 * x));
 
 # Simulated sensors for CO2
   - platform: template
